@@ -15,3 +15,4 @@ MonoBehaviour:
   rooms:
   - waves:
     - {fileID: 11400000, guid: 86ffb818e0e96474a818e620b0d17f5b, type: 2}
+    - {fileID: 11400000, guid: 86ffb818e0e96474a818e620b0d17f5b, type: 2}

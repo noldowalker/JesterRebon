@@ -27,7 +27,6 @@ namespace Code.Environment
             if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Enemy"))
                 return;
             
-            DebugExtension.DebugNotice($"spawnPoint locked by {other.gameObject.name}");
             _occupiedBy.Add(other);
         }
         
@@ -36,7 +35,6 @@ namespace Code.Environment
             if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Enemy"))
                 return;
             
-            DebugExtension.DebugNotice($"spawnPoint unlocked by  {other.gameObject.name}");
             _occupiedBy.Remove(other);
         }
 

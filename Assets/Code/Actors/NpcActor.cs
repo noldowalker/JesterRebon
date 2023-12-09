@@ -61,7 +61,8 @@ namespace Code.Actors
 
         private void OnDestroy()
         {
-            currentBehaviour.onBehaviourEnd -= BackToIdle;
+            if (currentBehaviour.IsNotNull())
+                currentBehaviour.onBehaviourEnd -= BackToIdle;
         }
 
         private void OnValidate()

@@ -17,15 +17,15 @@ namespace Code.Actors.Behaviours
             sensor.SubOnExit(Exit);
         }
 
+        public override void OnStart()
+        {
+            isActiveSearching = true;
+        }
+
         public override void Act()
         {
             if (isActiveSearching)
                 transform.Rotate(0, 25 * Time.deltaTime, 0);
-        }
-
-        public override void OnStart()
-        {
-            isActiveSearching = true;
         }
 
         public override void OnEnd()

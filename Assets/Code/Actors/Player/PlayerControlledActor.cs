@@ -21,8 +21,8 @@ namespace Code.Actors.Player
                 return;
             }
             
-            JumpHeight = playerSettings.jumpHeight;
-            MoveSpeed = 5;
+            // JumpHeight = playerSettings.jumpHeight;
+            MoveSpeed = playerSettings.moveSpeed;
             DebugExtension.InitNotice("Player initiated");
         }
 

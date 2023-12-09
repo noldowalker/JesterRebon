@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 8738554083430179253}
   - component: {fileID: 7092087178493391488}
   - component: {fileID: 3663255914016439295}
-  - component: {fileID: 3317162524078744558}
   - component: {fileID: 63421041292206952}
+  - component: {fileID: 3317162524078744558}
   m_Layer: 0
   m_Name: TestEnemyPrefub
   m_TagString: Enemy
@@ -165,6 +165,21 @@ MonoBehaviour:
   priority: 0
   actor: {fileID: 7092087178493391488}
   reactionTime: 0.5
+--- !u!114 &63421041292206952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2160882956382810709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc530a9ed69949f890395c3fb6154a69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 0
+  actor: {fileID: 7092087178493391488}
+  sensor: {fileID: 3558314258369974937}
 --- !u!114 &3317162524078744558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,22 +195,6 @@ MonoBehaviour:
   priority: 0
   actor: {fileID: 7092087178493391488}
   speed: 3
---- !u!114 &63421041292206952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2160882956382810709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc530a9ed69949f890395c3fb6154a69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  priority: 0
-  actor: {fileID: 7092087178493391488}
-  sightRange: 25
-  sensor: {fileID: 3558314258369974937}
 --- !u!1 &2309964208799603637
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,8 +596,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.63854, y: 2.37, z: 24.947731}
-  m_Center: {x: -0.45067406, y: -1.49, z: 12.4738655}
+  m_Size: {x: 8.63854, y: 2.37, z: 24.919193}
+  m_Center: {x: -0.45067406, y: -1.49, z: 12.459597}
 --- !u!114 &3558314258369974937
 MonoBehaviour:
   m_ObjectHideFlags: 0

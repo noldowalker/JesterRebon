@@ -16,4 +16,4 @@ MonoBehaviour:
   spawnSettings:
   - prefub: {fileID: 7092087178493391488, guid: c600051d6b41c284eab60a30d641dadb,
       type: 3}
-    amount: 3
+    amount: 10

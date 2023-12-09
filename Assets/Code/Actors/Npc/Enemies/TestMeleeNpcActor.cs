@@ -26,6 +26,7 @@ namespace Code.Actors.Npc.Enemies
                 return;
             }
             
+            
             ChangeBehaviourTo(BehaviourType.Move);
         }
         
