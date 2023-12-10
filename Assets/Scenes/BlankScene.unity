@@ -973,8 +973,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  inputActionAsset: {fileID: -944628639613478452, guid: eef634d5bc908684d9e5df71b513d7dc,
-    type: 3}
   playerControlledActorContainer: {fileID: 11400000, guid: b8cd33dc81f085b4eafdb058a2991f79,
     type: 2}
   npcActorsLevelCollection: {fileID: 11400000, guid: f414e6c63679cef45980b3cbf81f6a7e,

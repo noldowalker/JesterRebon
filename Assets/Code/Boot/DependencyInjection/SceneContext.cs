@@ -12,7 +12,6 @@ namespace Code.Boot.DependencyInjection
 {
     public class SceneContext : LifetimeScope
     {
-        [SerializeField] private InputActionAsset inputActionAsset;
         [SerializeField] private PlayerControlledActorContainer playerControlledActorContainer; 
         [SerializeField] private NpcActorsLevelCollection npcActorsLevelCollection; 
             
@@ -29,12 +28,17 @@ namespace Code.Boot.DependencyInjection
             
             #region Scriptable Objects for Injection
 
-            builder.RegisterInstance(inputActionAsset);
+            
             builder.RegisterInstance(playerControlledActorContainer);
             builder.RegisterInstance(npcActorsLevelCollection);
 
             #endregion Scriptable Objects for Injection
             
+            #region Create and register scoped exemplars
+            
+            builder.Register<JesterInputActionsAsset>(Lifetime.Scoped);
+            
+            #endregion Global Systems for Injection
         }  
     }
 }

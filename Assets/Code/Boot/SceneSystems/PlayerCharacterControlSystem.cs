@@ -9,7 +9,7 @@ namespace Code.Boot.SceneSystems
 {
     public class PlayerCharacterControlSystem : BaseSystem
     {
-        [Inject] private InputActionAsset _inputActions;
+        [Inject] private JesterInputActionsAsset _inputActions;
 
         [SerializeField] private Transform playerContainer;
         
@@ -20,12 +20,12 @@ namespace Code.Boot.SceneSystems
         {
             DebugExtension.InitNotice("Player Character Control System - OK");
             
-            _inputActions.FindActionMap("actions").Enable();
-            _inputActions.FindActionMap("actions").FindAction("jump").performed += OnJump;
-            _inputActions.FindActionMap("actions").FindAction("forward").performed += OnForward;
-            _inputActions.FindActionMap("actions").FindAction("forward").canceled += OnForward;
-            _inputActions.FindActionMap("actions").FindAction("right").performed += OnRight;
-            _inputActions.FindActionMap("actions").FindAction("right").canceled += OnRight;
+            _inputActions.actions.Enable();
+            _inputActions.actions.jump.performed += OnJump;
+            _inputActions.actions.forward.performed += OnForward;
+            _inputActions.actions.forward.canceled += OnForward;
+            _inputActions.actions.right.performed += OnRight;
+            _inputActions.actions.right.canceled += OnRight;
             
             velocity = Vector3.zero;
         }
