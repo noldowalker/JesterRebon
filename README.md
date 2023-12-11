@@ -1,4 +1,4 @@
 # JesterRebon
 
 ## Архитектура
-[Архитектура сцены](./Documentation/ArchitectureGuidelines/LevelStructure.md)
+[Архитектура сцены](./Documentation/ArchitectureGuidelines/BattleLevelStructure.md)
