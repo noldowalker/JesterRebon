@@ -18,6 +18,7 @@ namespace Code.Actors.Behaviours
         public abstract void OnStart();
         public abstract void OnEnd();
 
+
         private void OnValidate()
         {
             actor = GetComponent<NpcActor>();

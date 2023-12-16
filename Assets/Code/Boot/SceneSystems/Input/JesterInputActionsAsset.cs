@@ -53,6 +53,51 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""rotateX"",
+                    ""type"": ""Value"",
+                    ""id"": ""607ed494-04ec-43c2-99fc-7f4c79f41a90"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""rotateY"",
+                    ""type"": ""Value"",
+                    ""id"": ""f1c59e1a-f0f9-479a-8318-b63229c2852a"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""4450c3d9-43c3-4b17-9a77-9a8df3c7ae6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""kick"",
+                    ""type"": ""Button"",
+                    ""id"": ""ae1afd24-f281-40cc-aa8b-2da276e5e0ea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""punch"",
+                    ""type"": ""Button"",
+                    ""id"": ""ffbf2256-c46b-4734-95f0-bc73e44642d4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +177,61 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
                     ""action"": ""right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea265214-d756-4082-ae82-44f9c81749a3"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""rotateX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62c88c6c-8be6-4710-888c-8fecd2f472b6"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""rotateY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d5b6e95-be5f-42f3-9bad-41e5a8d66afa"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bfded424-d8f9-4236-98f3-dab0b66d8d19"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""kick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5de31af8-02ba-4573-98d4-cf792b0faec1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +243,11 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         m_actions_jump = m_actions.FindAction("jump", throwIfNotFound: true);
         m_actions_forward = m_actions.FindAction("forward", throwIfNotFound: true);
         m_actions_right = m_actions.FindAction("right", throwIfNotFound: true);
+        m_actions_rotateX = m_actions.FindAction("rotateX", throwIfNotFound: true);
+        m_actions_rotateY = m_actions.FindAction("rotateY", throwIfNotFound: true);
+        m_actions_dash = m_actions.FindAction("dash", throwIfNotFound: true);
+        m_actions_kick = m_actions.FindAction("kick", throwIfNotFound: true);
+        m_actions_punch = m_actions.FindAction("punch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,6 +312,11 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
     private readonly InputAction m_actions_jump;
     private readonly InputAction m_actions_forward;
     private readonly InputAction m_actions_right;
+    private readonly InputAction m_actions_rotateX;
+    private readonly InputAction m_actions_rotateY;
+    private readonly InputAction m_actions_dash;
+    private readonly InputAction m_actions_kick;
+    private readonly InputAction m_actions_punch;
     public struct ActionsActions
     {
         private @JesterInputActionsAsset m_Wrapper;
@@ -214,6 +324,11 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         public InputAction @jump => m_Wrapper.m_actions_jump;
         public InputAction @forward => m_Wrapper.m_actions_forward;
         public InputAction @right => m_Wrapper.m_actions_right;
+        public InputAction @rotateX => m_Wrapper.m_actions_rotateX;
+        public InputAction @rotateY => m_Wrapper.m_actions_rotateY;
+        public InputAction @dash => m_Wrapper.m_actions_dash;
+        public InputAction @kick => m_Wrapper.m_actions_kick;
+        public InputAction @punch => m_Wrapper.m_actions_punch;
         public InputActionMap Get() { return m_Wrapper.m_actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -232,6 +347,21 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
             @right.started += instance.OnRight;
             @right.performed += instance.OnRight;
             @right.canceled += instance.OnRight;
+            @rotateX.started += instance.OnRotateX;
+            @rotateX.performed += instance.OnRotateX;
+            @rotateX.canceled += instance.OnRotateX;
+            @rotateY.started += instance.OnRotateY;
+            @rotateY.performed += instance.OnRotateY;
+            @rotateY.canceled += instance.OnRotateY;
+            @dash.started += instance.OnDash;
+            @dash.performed += instance.OnDash;
+            @dash.canceled += instance.OnDash;
+            @kick.started += instance.OnKick;
+            @kick.performed += instance.OnKick;
+            @kick.canceled += instance.OnKick;
+            @punch.started += instance.OnPunch;
+            @punch.performed += instance.OnPunch;
+            @punch.canceled += instance.OnPunch;
         }
 
         private void UnregisterCallbacks(IActionsActions instance)
@@ -245,6 +375,21 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
             @right.started -= instance.OnRight;
             @right.performed -= instance.OnRight;
             @right.canceled -= instance.OnRight;
+            @rotateX.started -= instance.OnRotateX;
+            @rotateX.performed -= instance.OnRotateX;
+            @rotateX.canceled -= instance.OnRotateX;
+            @rotateY.started -= instance.OnRotateY;
+            @rotateY.performed -= instance.OnRotateY;
+            @rotateY.canceled -= instance.OnRotateY;
+            @dash.started -= instance.OnDash;
+            @dash.performed -= instance.OnDash;
+            @dash.canceled -= instance.OnDash;
+            @kick.started -= instance.OnKick;
+            @kick.performed -= instance.OnKick;
+            @kick.canceled -= instance.OnKick;
+            @punch.started -= instance.OnPunch;
+            @punch.performed -= instance.OnPunch;
+            @punch.canceled -= instance.OnPunch;
         }
 
         public void RemoveCallbacks(IActionsActions instance)
@@ -267,5 +412,10 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         void OnJump(InputAction.CallbackContext context);
         void OnForward(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+        void OnRotateX(InputAction.CallbackContext context);
+        void OnRotateY(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnKick(InputAction.CallbackContext context);
+        void OnPunch(InputAction.CallbackContext context);
     }
 }

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 768c3bb632cc47c0a4d116cbfc10be29, type: 3}
+  m_Name: BasePlayerControlledActorSettings
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 6912725353454818530, guid: 6c4b9373f5af54f4ea25d69c25b40818,
+    type: 3}
+  settings:
+    totalHP: 100
+    totalDashPoints: 3
+    totalDoubleJumps: 3
+    moveSpeed: 5
+    jumpHeight: 5
+    turnSmoothTime: 0.1
+    gravityScale: 10
+    splashGravityModifier: 5
+    dashForce: 30
+    punchDashForce: 10
+    punchPushForce: 80
+    kickDashForce: 20
+    kickPushForce: 200
+    kickCastRadius: 1.5
+    punchCastRadius: 1
+    magnetCastRadius: 3
+    splashRadius: 5
+    splashPushForce: 40
+    doubleJumpCastRadius: 0.1
+    punchDamage: 10
+    kickDamage: 5
+    splashDamage: 15
+    doubleJumpDamage: 3
+    dashTime: 0.15
+    dashCoolDown: 1
+    punchTime: 0.1
+    punchCoolDown: 0.2
+    kickTime: 0.15
+    kickCoolDown: 0.8
+    kickStunTime: 5
+    splashStunTime: 3
+    dashPointsRestoreTime: 5

@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Code.Boot.Systems
 {
-    public class LevelSystem : BaseSystem
+    public partial class LevelSystem : BaseSystem
     {
         [SerializeField] 
         [Tooltip("Время до инициализации уровня")]
@@ -17,7 +17,7 @@ namespace Code.Boot.Systems
         [Inject] private NpcActorsSystem _npcActorsSystem;
         [Inject] private EnvironmentSystem _environmentSystem;
         [Inject] private PlayerCharacterControlSystem _playerCharacterControlSystem;
-        [Inject] private PlayerControlledActorContainer _playerControlledActorContainer;
+        [Inject] private PlayerControlledActorContainer _playerControlledActorContainer;       
 
         private bool initiated;
         
@@ -47,9 +47,10 @@ namespace Code.Boot.Systems
             _playerCharacterControlSystem.Init();
             var playerActor = _playerControlledActorContainer.CreateInstance();
             _playerCharacterControlSystem.SetControlledActor(playerActor);
+            //_springArm.SetTarget(playerActor.transform);
 
             initiated = true;
-            
+            Subscribe();
             DebugExtension.InitNotice("All systems initialized");
             
             // Убираем экран загрузки

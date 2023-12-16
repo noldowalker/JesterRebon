@@ -7,15 +7,11 @@ namespace Code.Actors.Behaviours
 {
     public class LookForPlayerBehaviour : AbstractBehaviour
     {
-        [SerializeField] private PlayerVisibleSensor sensor; 
+        [SerializeField] private float sensorCastLength;
+        [SerializeField] private float sensorCastRadius;
         public override BehaviourType Type => BehaviourType.Search;
         protected bool isActiveSearching = false;
 
-        private void Start()
-        {
-            sensor.SubOnEnter(Enter);
-            sensor.SubOnExit(Exit);
-        }
 
         public override void OnStart()
         {
@@ -26,46 +22,44 @@ namespace Code.Actors.Behaviours
         {
             if (isActiveSearching)
                 transform.Rotate(0, 25 * Time.deltaTime, 0);
+            RaycastHit hit;
+            if(Physics.SphereCast(transform.position,sensorCastRadius,transform.forward*sensorCastLength,out hit))
+            {
+                if(hit.transform.tag == "Player")
+                {
+                    Enter(hit.transform);
+                }
+            } else
+            {
+                Exit();
+            }
         }
 
         public override void OnEnd()
         {
-            sensor.SubOnEnter(Enter);
-            sensor.SubOnExit(Exit);
             isActiveSearching = false;
         }
 
-        private void Enter(Collider other)
+        private void Enter(Transform obj)
         {
             if (!isActiveSearching)
                 return;
-            
-            if (other.gameObject.CompareTag("Player"))
-            {
-                actor.SetPlayerLink(other.gameObject.transform);
-                OnEnd();
-                onBehaviourEnd.Invoke();
-            }
+            actor.SetPlayerLink(obj);
+            OnEnd();
+            onBehaviourEnd.Invoke();
+
         }
         
-        void Exit(Collider other)
+        void Exit()
         {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                actor.SetPlayerLink(null);
-            }
+            actor.SetPlayerLink(null);
         }
 
         private void OnValidate()
         {
-            if (sensor == null)
-                DebugExtension.Warning($"{gameObject.name} has no sensor for LookForPlayerBehaviour");
+           /* if (sensor == null)
+                DebugExtension.Warning($"{gameObject.name} has no sensor for LookForPlayerBehaviour");*/
         }
-        
-        private void OnDestroy()
-        {
-            sensor.UnsubOnEnter(Enter);
-            sensor.UnsubOnExit(Exit);
-        }
+       
     }
 }

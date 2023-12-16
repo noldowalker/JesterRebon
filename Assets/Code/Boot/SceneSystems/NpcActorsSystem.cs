@@ -44,10 +44,10 @@ namespace Code.Boot.Systems
             _activeEnemies = new List<TestMeleeNpcActor>(_enemiesToSpawnPool.Count);
             IsWaveDefeated = true;
 
-            /*
+
             _activeEnemies = GetComponentsInChildren<TestMeleeNpcActor>().ToList();
-            _activeEnemies.ForEach(a => a.Init());*/
-            
+            _activeEnemies.ForEach(a => a.Init());
+
             DebugExtension.InitNotice("None Player Actors System - OK");
         }
 
@@ -128,6 +128,15 @@ namespace Code.Boot.Systems
                 
                 _spawnRateTimer = 0;
             }
+        }
+
+        public void HandleEnemyHit(GameObject obj, float damage, float force, float timeOfStun, Vector3 direction)
+        {
+            var enemy = _activeEnemies.FirstOrDefault(e => e.gameObject == obj);
+            if (enemy == null)
+                return;
+            enemy.TakeDamage(damage);
+            enemy.ReactOnHit( force, timeOfStun, direction);
         }
 
         private List<TestMeleeNpcActor> CreateEnemiesPool()
