@@ -36,7 +36,7 @@ namespace Code.Boot.SceneSystems
 
         private void CollectAndInitAllSpawnPoints()
         {
-            _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
+            _spawnPoints = GetComponentsInChildren<SpawnPoint>().Where(sp => sp.enabled).ToList();
             if(_spawnPoints.Count == 0)
                 DebugExtension.Warning("Environment System cant find any spawn points on scene!");
             

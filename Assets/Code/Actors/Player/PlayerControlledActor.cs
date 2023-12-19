@@ -130,7 +130,8 @@ namespace Code.Actors.Player
                             damage = settings.doubleJumpDamage,
                             direction = Vector3.zero,
                             force = 0,
-                            enemy = hit.transform.gameObject
+                            enemy = hit.transform.gameObject,
+                            timeOfStun = 5,
                         };
                         GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                         _currentDoubleJumps--;
@@ -214,7 +215,8 @@ namespace Code.Actors.Player
                                 damage = settings.kickDamage,
                                 direction = transform.forward,
                                 force = settings.kickPushForce,
-                                enemy = hit.transform.gameObject
+                                enemy = hit.transform.gameObject,
+                                timeOfStun = 5,
                             };
                             GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                             //_isKicking = false;
@@ -241,7 +243,8 @@ namespace Code.Actors.Player
                                 damage = settings.punchDamage,
                                 direction = transform.forward,
                                 force = settings.punchPushForce,
-                                enemy = hit.transform.gameObject
+                                enemy = hit.transform.gameObject,
+                                timeOfStun = 5,
                             };
                             GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                             //_isPunching = false;
@@ -268,7 +271,8 @@ namespace Code.Actors.Player
                             damage = settings.splashDamage,
                             direction = hit.transform.position - transform.position,
                             force = settings.splashPushForce,
-                            enemy = hit.transform.gameObject
+                            enemy = hit.transform.gameObject,
+                            timeOfStun = 5,
                         };
                         GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);                      
                     }

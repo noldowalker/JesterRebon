@@ -38,15 +38,27 @@ namespace Code.Boot.Systems
 
         public void Init()
         {
+            _activeEnemies = GetComponentsInChildren<TestMeleeNpcActor>().ToList().Where(a => a.enabled).ToList();
+            _activeEnemies.ForEach(a =>
+            {
+                a.transform.SetParent(activeEnemiesContainer);
+                var position = a.gameObject.transform.position;
+                if (NavMesh.SamplePosition(position, out NavMeshHit hit, 25f, NavMesh.AllAreas))
+                {
+                    a.transform.position = hit.position;
+                }
+                else
+                {
+                    Debug.LogError("NavMeshAgent is not placed on a NavMesh");
+                }
+                
+                a.Init();
+            });
+            
             _nextRoomIndex = 0;
             _nextWaveIndex = 0;
             _enemiesToSpawnPool = CreateEnemiesPool();
-            _activeEnemies = new List<TestMeleeNpcActor>(_enemiesToSpawnPool.Count);
             IsWaveDefeated = true;
-
-
-            _activeEnemies = GetComponentsInChildren<TestMeleeNpcActor>().ToList();
-            _activeEnemies.ForEach(a => a.Init());
 
             DebugExtension.InitNotice("None Player Actors System - OK");
         }
@@ -69,7 +81,7 @@ namespace Code.Boot.Systems
         
         public void PrepareNextWaveForSpawn()
         {
-            if (_enemiesToSpawnPool.Count == 0)
+            if (_spawnPoints.Count == 0 && _enemiesToSpawnPool.Count == 0)
                 return;
             
             if (_currentRoomSettings.waves.Length < _nextWaveIndex)
@@ -135,8 +147,9 @@ namespace Code.Boot.Systems
             var enemy = _activeEnemies.FirstOrDefault(e => e.gameObject == obj);
             if (enemy == null)
                 return;
+            
             enemy.TakeDamage(damage);
-            enemy.ReactOnHit( force, timeOfStun, direction);
+            enemy.ReactOnHit(force, timeOfStun, direction);
         }
 
         private List<TestMeleeNpcActor> CreateEnemiesPool()

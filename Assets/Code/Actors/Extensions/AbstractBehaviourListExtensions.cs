@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Code.Actors.Behaviours;
+using Code.Actors.Behaviours.BehaviourSettings;
 
 namespace Code.Actors.Extensions
 {

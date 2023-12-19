@@ -1,4 +1,6 @@
 using System;
+using Code.Actors.Behaviours.BehaviourSettings;
+using Code.Boot.Logging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,11 +19,10 @@ namespace Code.Actors.Behaviours
                 actor.NavMeshAgent.remainingDistance > actor.NavMeshAgent.stoppingDistance)
                 return;
 
-            OnEnd();
             onBehaviourEnd.Invoke();
         }
 
-        public override void OnStart()
+        public override void OnStart<T>(T settings)
         {
             var destination = actor.PlayerPosition;
             if (destination.Equals(Vector3.negativeInfinity))

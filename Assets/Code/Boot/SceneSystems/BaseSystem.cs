@@ -4,12 +4,12 @@ namespace Code.Boot.Systems
 {
     public class BaseSystem : MonoBehaviour
     {
-        protected void Subscribe()
+        protected virtual void Subscribe()
         {
             // подписки на события
         }
 
-        protected void Unsubscribe()
+        protected virtual void Unsubscribe()
         {
             // отписки от событий
         }

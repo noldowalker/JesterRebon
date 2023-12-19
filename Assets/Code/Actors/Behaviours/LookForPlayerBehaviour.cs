@@ -1,5 +1,7 @@
 using System;
+using Code.Actors.Behaviours.BehaviourSettings;
 using Code.Actors.Behaviours.Sensor;
+using Code.Actors.Player.Settings;
 using Code.Boot.Logging;
 using UnityEngine;
 
@@ -12,8 +14,7 @@ namespace Code.Actors.Behaviours
         public override BehaviourType Type => BehaviourType.Search;
         protected bool isActiveSearching = false;
 
-
-        public override void OnStart()
+        public override void OnStart<T>(T settings)
         {
             isActiveSearching = true;
         }
@@ -45,9 +46,7 @@ namespace Code.Actors.Behaviours
             if (!isActiveSearching)
                 return;
             actor.SetPlayerLink(obj);
-            OnEnd();
             onBehaviourEnd.Invoke();
-
         }
         
         void Exit()

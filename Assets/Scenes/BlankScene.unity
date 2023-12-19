@@ -1042,7 +1042,7 @@ PrefabInstance:
     - target: {fileID: 1291983012593270478, guid: c600051d6b41c284eab60a30d641dadb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.27
+      value: 5.18
       objectReference: {fileID: 0}
     - target: {fileID: 1291983012593270478, guid: c600051d6b41c284eab60a30d641dadb,
         type: 3}
@@ -1087,18 +1087,43 @@ PrefabInstance:
     - target: {fileID: 2160882956382810709, guid: c600051d6b41c284eab60a30d641dadb,
         type: 3}
       propertyPath: m_Name
-      value: TestEnemyPrefub
+      value: SpawnedEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2160882956382810709, guid: c600051d6b41c284eab60a30d641dadb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3066349779850372605, guid: c600051d6b41c284eab60a30d641dadb,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2100384319}
+    - target: {fileID: 5698786047720366869, guid: c600051d6b41c284eab60a30d641dadb,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6554987203733913607, guid: c600051d6b41c284eab60a30d641dadb,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2100384319}
+    - target: {fileID: 7092087178493391488, guid: c600051d6b41c284eab60a30d641dadb,
+        type: 3}
+      propertyPath: disableAi
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092087178493391488, guid: c600051d6b41c284eab60a30d641dadb,
+        type: 3}
+      propertyPath: actorsCollider
+      value: 
+      objectReference: {fileID: 1764106837}
+    - target: {fileID: 8738554083430179253, guid: c600051d6b41c284eab60a30d641dadb,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1199,6 +1224,12 @@ LightingSettings:
   m_PVRTiledBaking: 0
   m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
+--- !u!136 &1764106837 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 7211296292751510029, guid: c600051d6b41c284eab60a30d641dadb,
+    type: 3}
+  m_PrefabInstance: {fileID: 991654639}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1803878358
 GameObject:
   m_ObjectHideFlags: 0

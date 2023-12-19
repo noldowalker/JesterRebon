@@ -1,4 +1,5 @@
 using System;
+using Code.Actors.Behaviours.BehaviourSettings;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace Code.Actors.Behaviours
         public int Priority => priority;
         
         public abstract void Act();
-        public abstract void OnStart();
+        public abstract void OnStart<T>(T settings) where T : AbstractBehaviourSettings;
         public abstract void OnEnd();
 
 
@@ -30,11 +31,13 @@ namespace Code.Actors.Behaviours
     {
         public override void OnInspectorGUI()
         {
-            var behaviour = (AbstractBehaviour)target;
+            var behaviour = target as AbstractBehaviour;
 
-            EditorGUILayout.LabelField("Type", behaviour.Type.ToString());
-
-            DrawDefaultInspector();
+            if (behaviour != null)
+            {
+                EditorGUILayout.LabelField("Type", behaviour.Type.ToString());
+                DrawDefaultInspector();
+            }
         }
     }
 }

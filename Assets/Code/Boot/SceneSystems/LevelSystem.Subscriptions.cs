@@ -12,16 +12,18 @@ namespace Code.Boot.Systems
 {
     public partial class LevelSystem : BaseSystem
     {
-        private void Subscribe()
+        protected override void Subscribe()
         {
             GlobalEventsSystem<EnemyHitDto>.Sub(GlobalEventType.ENEMY_HIT, OnEnemyHit);
             GlobalEventsSystem<HitDto>.Sub(GlobalEventType.PLAYER_HIT, OnPlayerHit);
+            base.Subscribe();
         }
 
-        private void UnSubscribe()
+        protected override void Unsubscribe()
         {
             GlobalEventsSystem<EnemyHitDto>.Unsub(GlobalEventType.ENEMY_HIT, OnEnemyHit);
             GlobalEventsSystem<HitDto>.Unsub(GlobalEventType.PLAYER_HIT, OnPlayerHit);
+            base.Unsubscribe();
         }
 
         private void OnEnemyHit(EnemyHitDto dto)

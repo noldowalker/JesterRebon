@@ -1,3 +1,4 @@
+using Code.Actors.Behaviours.BehaviourSettings;
 using UnityEngine;
 
 namespace Code.Actors.Behaviours
@@ -20,7 +21,7 @@ namespace Code.Actors.Behaviours
             actor.MakeDecision();
         }
 
-        public override void OnStart()
+        public override void OnStart<T>(T settings)
         {
             _timePastSinceStart = 0;
         }

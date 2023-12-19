@@ -1,48 +1,51 @@
 using Assets.Code.Boot.GlobalEvents.DataObjects;
 using System;
 using System.Collections;
+using Code.Actors.Behaviours.BehaviourSettings;
+using Code.Boot.Logging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Code.Actors.Behaviours
 {
-    [RequireComponent(typeof(NavMeshAgent))]
     public class HitReactionBehaviour : AbstractBehaviour
     {
         private float force;
         private Vector3 direction;
         private float timeOfStun;
-        private bool isStunned;
+        private float timeInStunnedCondition;
 
         public override BehaviourType Type => BehaviourType.ReactOnHit;
         
         public override void Act()
         {
-            /*if(!actor.Rigidbody.isKinematic && actor.Rigidbody.velocity.magnitude <= 0.01)
-                actor.Rigidbody.isKinematic = true;*/
-            if (isStunned)
+            timeInStunnedCondition += Time.deltaTime;
+            if (timeInStunnedCondition <= timeOfStun)
                 return;
-            OnEnd();
+
             onBehaviourEnd.Invoke();
         }
 
-        public override void OnStart()
+        public override void OnStart<T>(T settings)
         {
-            timeOfStun = 5;
-            isStunned = true;
-            StartCoroutine(StunPerform());
+            var hitReactionSettings = settings as HitReactionBehaviourSettings;
+
+            if (hitReactionSettings == null)
+                return;
+            
+            timeOfStun = hitReactionSettings.timeOfStun;
+            direction = hitReactionSettings.direction;
+            force = hitReactionSettings.force;
+            timeInStunnedCondition = 0;
+            
+            actor.ActorsRigidbody.isKinematic = false;
+            actor.ActorsRigidbody.AddForce(direction * force * 10, ForceMode.Impulse);
         }
 
         public override void OnEnd()
         {
-            actor.Rigidbody.isKinematic = true;
-        }
-
-        private IEnumerator StunPerform()
-        {
-            yield return new WaitForSeconds(timeOfStun);
-            isStunned = false;
+            actor.ActorsRigidbody.isKinematic = true;
         }
     }
 }
