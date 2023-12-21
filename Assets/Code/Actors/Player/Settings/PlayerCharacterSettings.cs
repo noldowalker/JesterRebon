@@ -51,6 +51,7 @@ namespace Code.Actors.Player.Settings
         public float dashCoolDown;
         public float punchTime;
         public float punchCoolDown;
+        public float punchStunTime;
         public float kickTime;
         public float kickCoolDown;
         public float kickStunTime;

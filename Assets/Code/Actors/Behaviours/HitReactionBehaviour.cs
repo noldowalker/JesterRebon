@@ -11,17 +11,17 @@ namespace Code.Actors.Behaviours
 {
     public class HitReactionBehaviour : AbstractBehaviour
     {
-        private float force;
-        private Vector3 direction;
-        private float timeOfStun;
-        private float timeInStunnedCondition;
+        private float _force;
+        private Vector3 _direction;
+        private float _timeOfStun;
+        private float _timeInStunnedCondition;
 
         public override BehaviourType Type => BehaviourType.ReactOnHit;
         
         public override void Act()
         {
-            timeInStunnedCondition += Time.deltaTime;
-            if (timeInStunnedCondition <= timeOfStun)
+            _timeInStunnedCondition += Time.deltaTime;
+            if (_timeInStunnedCondition <= _timeOfStun)
                 return;
 
             onBehaviourEnd.Invoke();
@@ -34,13 +34,13 @@ namespace Code.Actors.Behaviours
             if (hitReactionSettings == null)
                 return;
             
-            timeOfStun = hitReactionSettings.timeOfStun;
-            direction = hitReactionSettings.direction;
-            force = hitReactionSettings.force;
-            timeInStunnedCondition = 0;
+            _timeOfStun = hitReactionSettings.timeOfStun;
+            _direction = hitReactionSettings.direction;
+            _force = hitReactionSettings.force;
+            _timeInStunnedCondition = 0;
             
             actor.ActorsRigidbody.isKinematic = false;
-            actor.ActorsRigidbody.AddForce(direction * force * 10, ForceMode.Impulse);
+            actor.ActorsRigidbody.AddForce(_direction * _force * 10, ForceMode.Impulse);
         }
 
         public override void OnEnd()

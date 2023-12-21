@@ -25,7 +25,11 @@ namespace Code.Actors.Npc.Enemies
                 ChangeBehaviourTo(BehaviourType.Search);
                 return;
             }
-            
+            if (InAttackDistance(_playerTransform))
+            {
+                MeleeAttackTarget(_playerTransform);
+                return;
+            }
             ChangeBehaviourTo(BehaviourType.Move);
         }
         

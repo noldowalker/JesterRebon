@@ -13,6 +13,7 @@ namespace Assets.Code.Boot.GlobalEvents.DataObjects
         public float damage;
         public Vector3 direction;
         public float force;
+        public float pushTime;
         public float timeOfStun;
     }
 }

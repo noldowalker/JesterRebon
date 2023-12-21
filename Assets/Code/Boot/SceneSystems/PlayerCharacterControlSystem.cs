@@ -65,16 +65,22 @@ namespace Code.Boot.SceneSystems
 
         public void Act()
         {
-            Move();
-            Dash();
-            _actor.ProcessTimingActions();
-            _springArm.Rotate(_yaw, _pitch);
+            if (!_actor.controlLocked)
+            {
+                Move();
+                Dash();
+                _actor.ProcessTimingActions();
+            }
+            if (!_actor.cameraLocked)
+            {
+                _springArm.Rotate(_yaw, _pitch);
+            }
         }
 
-        public void HandlePlayerHit(float damage, float force, float stunTime, Vector3 direction)
+        public void HandlePlayerHit(float damage, float pushForce, float pushTime, Vector3 pushDirection, float stunTime)
         {
             _actor.TakeDamage(damage);
-            _actor.ReactOnHit(force, stunTime, direction);
+            _actor.ReactOnHit(pushForce, pushTime, pushDirection, stunTime);
         }
 
         private void Move()

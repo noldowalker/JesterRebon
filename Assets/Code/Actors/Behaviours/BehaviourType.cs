@@ -7,6 +7,7 @@ namespace Code.Actors.Behaviours
         MeleeAttack,
         RangedAttack,
         Search,
-        ReactOnHit
+        ReactOnHit,
+        Death
     }
 }

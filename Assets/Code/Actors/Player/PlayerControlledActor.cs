@@ -18,7 +18,9 @@ namespace Code.Actors.Player
         [SerializeField] private CapsuleCollider capsuleCollider;
         [SerializeField] private CharacterController characterController;
         [SerializeField] private Transform hitPoint;
-        
+
+        public bool controlLocked;
+        public bool cameraLocked;
         public PlayerCharacterSettings settings;
 
         //Local variables
@@ -40,6 +42,10 @@ namespace Code.Actors.Player
         private bool _isSplashing;
         private bool _canApplyDamage;
         private bool _isRestoringDashPoints;
+        private bool _isAttacked;
+
+        //Temporal constants
+        private Vector3 _tempAttackPush;
 
 
         public override void Init(AbstractSettings settings)
@@ -64,6 +70,7 @@ namespace Code.Actors.Player
             _isPunching = false;
             _isKicking = false;
             _isSplashing = false;
+            _isAttacked = false;
             _isRestoringDashPoints = false;
 
             DebugExtension.InitNotice("Player initiated");
@@ -244,10 +251,9 @@ namespace Code.Actors.Player
                                 direction = transform.forward,
                                 force = settings.punchPushForce,
                                 enemy = hit.transform.gameObject,
-                                timeOfStun = 5,
+                                timeOfStun = settings.punchStunTime,
                             };
                             GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
-                            //_isPunching = false;
                             _canApplyDamage = false;
                             break;
                         }
@@ -272,7 +278,7 @@ namespace Code.Actors.Player
                             direction = hit.transform.position - transform.position,
                             force = settings.splashPushForce,
                             enemy = hit.transform.gameObject,
-                            timeOfStun = 5,
+                            timeOfStun = settings.kickStunTime,
                         };
                         GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);                      
                     }
@@ -283,26 +289,41 @@ namespace Code.Actors.Player
             {
                 _currentDoubleJumps = settings.totalDoubleJumps;
             }
-            //Pricessing restoring dashPoints
+            //Processing restoring dashPoints
             if(!_isRestoringDashPoints && _currentDashPoints < settings.totalDashPoints)
             {
                 _isRestoringDashPoints = true;
                 StartCoroutine(RestoreDashPoints());
+            }
+            //Processing actor being pushed by enemy attack
+            if (_isAttacked)
+            {
+                characterController.Move(_tempAttackPush * Time.deltaTime);
             }
         }
 
         public void TakeDamage(float damage)
         {
             _currentHp -= damage;
-            if(_currentHp <= 0)
+            Debug.Log(string.Format("Player got {0}, remainingHP: {1}",damage,_currentHp));
+            if (_currentHp <= 0)
             {
+                Time.timeScale = 0;
                 Debug.Log("GAME OVER");
             }
         }
 
-        public void ReactOnHit(float force, float stunTime, Vector3 direction)
+        public void ReactOnHit(float pushForce, float pushTime, Vector3 pushDirection, float stunTime)
         {
-
+            _isAttacked = true;
+            _tempAttackPush = pushForce * pushDirection;
+            StartCoroutine(BeingAttacked(pushTime));
+            /*if (stunTime > 0)
+            {
+                //handle stun
+                controlLocked = true;
+                StartCoroutine(BeingStunned(stunTime));
+            }*/
         }
 
         private void InitStats()
@@ -357,6 +378,19 @@ namespace Code.Actors.Player
             _isRestoringDashPoints = false;
         }
 
+        private IEnumerator BeingStunned(float timeOfStun)
+        {
+            yield return new WaitForSeconds(timeOfStun);
+            controlLocked = false;
+        }
+
+        private IEnumerator BeingAttacked(float timeOfAttack)
+        {
+            yield return new WaitForSeconds(timeOfAttack);
+            _isAttacked = false;
+            _tempAttackPush = Vector3.zero;
+        }
+
 
         private void OnValidate()
         {
@@ -366,7 +400,7 @@ namespace Code.Actors.Player
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawRay(hitPoint.position, (transform.forward + (transform.up/6))*10);
+            //Gizmos.DrawRay(hitPoint.position, (transform.forward + (transform.up/6))*10);
             //Gizmos.DrawSphere(transform.position, settings.doubleJumpCastRadius);
         }
     }

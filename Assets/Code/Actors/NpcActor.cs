@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Code.Actors.Behaviours;
@@ -20,6 +21,10 @@ namespace Code.Actors
     public abstract class NpcActor : AbstractActor
     {
         public bool disableAi;
+        [SerializeField] private float currentHp;
+        [SerializeField] private float totalHp;
+        [SerializeField] private Transform hitPoint;
+        [SerializeField] private float attackCastRadius;
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private Rigidbody actorsRigidbody;
         [SerializeField] private Collider actorsCollider;
@@ -29,6 +34,8 @@ namespace Code.Actors
         protected Transform _playerTransform;
         public NavMeshAgent NavMeshAgent => navMeshAgent;
         public Rigidbody ActorsRigidbody => actorsRigidbody;
+
+        public Collider ActorsCollider => actorsCollider;
         public Vector3 PlayerPosition => _playerTransform.IsNotNull() ? _playerTransform.position : Vector3.negativeInfinity;
 
         public void Init()
@@ -41,7 +48,6 @@ namespace Code.Actors
             navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.enabled = true;
             behaviours = GetComponents<AbstractBehaviour>().ToList();
-
             if (!disableAi)
             {
                 ChangeBehaviourTo(BehaviourType.Idle);
@@ -55,27 +61,80 @@ namespace Code.Actors
 
         public virtual void ReactOnHit(float force, float timeOfStun, Vector3 direction)
         {
-            var settings = new HitReactionBehaviourSettings()
+            if (IsNotDead())
             {
-                force = force,
-                timeOfStun = timeOfStun,
-                direction = direction,
-            };
-            
-            ChangeBehaviourTo(BehaviourType.ReactOnHit, settings);
+                var settings = new HitReactionBehaviourSettings()
+                {
+                    force = force,
+                    timeOfStun = timeOfStun,
+                    direction = direction,
+                };
+
+                ChangeBehaviourTo(BehaviourType.ReactOnHit, settings);
+            }
+        }
+
+
+        public virtual bool IsEnemy(Transform target)
+        {
+            //=====
+            return target.tag == "Player" ||
+                (transform.tag == "Enemy" && target.tag == "Neutral") ||
+                (transform.tag == "Neutral" && target.tag == "Enemy");
+            //===== todo refactor
+        }
+
+        public virtual bool InAttackDistance(Transform target)
+        {
+            Collider[] hits = Physics.OverlapSphere(hitPoint.position, attackCastRadius);
+            foreach (Collider hit in hits)
+            {
+                if (hit.transform.tag == target.tag)
+                    return true;
+            }
+            return false;
+        }
+
+
+        public virtual void MeleeAttackTarget(Transform target)
+        {
+            transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
+            ChangeBehaviourTo(BehaviourType.MeleeAttack, new BaseAttackBehaviourSettings()
+            {
+                hitpoint = this.hitPoint,
+                attackCastRadius = this.attackCastRadius
+            });
+        }
+
+        public virtual void RangedAttackTarget()
+        {
+
         }
 
         public virtual void TakeDamage(float damage)
         {
-            Debug.Log($"Enemy got {damage} damage");
+            if (IsNotDead())
+            {
+                currentHp -= damage;
+                if (currentHp <= 0)
+                {
+                    Debug.Log("Enemy is dead");
+                    ChangeBehaviourTo(BehaviourType.Death);
+                }
+            }
             
         }
 
-        public virtual bool IsGrounded()
+        public virtual bool IsNotDead()
         {
-            return Physics.Raycast(transform.position, -Vector3.up, actorsCollider.bounds.extents.y + 0.1f);
+            return currentBehaviour.Type != BehaviourType.Death;
         }
 
+        /* public virtual bool IsGrounded()
+         {
+             return Physics.Raycast(transform.position, -Vector3.up, collider.bounds.extents.y + 0.1f);
+         }
+ */
         protected void BackToIdle()
         {
             ChangeBehaviourTo(BehaviourType.Idle);
@@ -114,6 +173,11 @@ namespace Code.Actors
             actorsCollider ??= GetComponent<Collider>();
         }
 
+
+        private void OnDrawGizmos()
+        {
+            //Gizmos.DrawSphere(hitPoint.position, attackCastRadius);
+        }
         public abstract void MakeDecision();
     }
 }

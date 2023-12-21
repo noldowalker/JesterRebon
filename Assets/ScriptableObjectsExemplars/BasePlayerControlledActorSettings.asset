@@ -25,23 +25,24 @@ MonoBehaviour:
     splashGravityModifier: 5
     dashForce: 30
     punchDashForce: 10
-    punchPushForce: 80
+    punchPushForce: 30
     kickDashForce: 20
-    kickPushForce: 200
+    kickPushForce: 150
     kickCastRadius: 1.5
     punchCastRadius: 1
     magnetCastRadius: 3
     splashRadius: 5
     splashPushForce: 40
     doubleJumpCastRadius: 0.1
-    punchDamage: 10
-    kickDamage: 5
+    punchDamage: 20
+    kickDamage: 10
     splashDamage: 15
-    doubleJumpDamage: 3
+    doubleJumpDamage: 5
     dashTime: 0.15
     dashCoolDown: 1
     punchTime: 0.1
     punchCoolDown: 0.2
+    punchStunTime: 0.5
     kickTime: 0.15
     kickCoolDown: 0.8
     kickStunTime: 5

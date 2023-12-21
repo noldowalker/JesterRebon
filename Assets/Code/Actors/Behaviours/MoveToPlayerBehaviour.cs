@@ -15,6 +15,8 @@ namespace Code.Actors.Behaviours
         
         public override void Act()
         {
+            if (actor == null || actor.NavMeshAgent == null)
+                return;
             if (!actor.PlayerPosition.Equals(Vector3.negativeInfinity) && 
                 actor.NavMeshAgent.remainingDistance > actor.NavMeshAgent.stoppingDistance)
                 return;
@@ -24,6 +26,8 @@ namespace Code.Actors.Behaviours
 
         public override void OnStart<T>(T settings)
         {
+            if (actor == null || actor.NavMeshAgent == null)
+                return;
             var destination = actor.PlayerPosition;
             if (destination.Equals(Vector3.negativeInfinity))
                 return;

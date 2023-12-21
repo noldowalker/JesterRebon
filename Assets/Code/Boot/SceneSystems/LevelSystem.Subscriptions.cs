@@ -32,7 +32,7 @@ namespace Code.Boot.Systems
         }
         private void OnPlayerHit(HitDto dto)
         {
-            _playerCharacterControlSystem.HandlePlayerHit(dto.damage, dto.force, dto.timeOfStun, dto.direction);
+            _playerCharacterControlSystem.HandlePlayerHit(dto.damage, dto.force, dto.pushTime , dto.direction, dto.timeOfStun);
         }
 
         private void OnDestroy()

@@ -184,6 +184,9 @@ MonoBehaviour:
   capsuleCollider: {fileID: 9132367445712611707}
   characterController: {fileID: 4278161008510892674}
   hitPoint: {fileID: 2334774023979972773}
+  rigidBody: {fileID: 0}
+  controlLocked: 0
+  cameraLocked: 0
   settings:
     totalHP: 0
     totalDashPoints: 0
@@ -212,6 +215,7 @@ MonoBehaviour:
     dashCoolDown: 0
     punchTime: 0
     punchCoolDown: 0
+    punchStunTime: 0
     kickTime: 0
     kickCoolDown: 0
     kickStunTime: 0
