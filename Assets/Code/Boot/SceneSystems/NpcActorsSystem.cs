@@ -86,8 +86,13 @@ namespace Code.Boot.Systems
             if (_spawnPoints.Count == 0 && _enemiesToSpawnPool.Count == 0)
                 return;
             
-            if (_currentRoomSettings.waves.Length < _nextWaveIndex)
-                DebugExtension.Warning($"There is no npc data for wave index {_nextWaveIndex} for room index {_nextRoomIndex - 1}");
+            if (_currentRoomSettings.waves.Length <= _nextWaveIndex)
+            {
+                // ToDo: здесь заканчивается арена. ПО идее должна гдет быть реализована смена комнаты.
+                DebugExtension.DebugNotice(
+                    $"Room clear!");
+                return;
+            }
             
             _currentWave = _currentRoomSettings.waves[_nextWaveIndex];
             _spawnRateTimer = 0;

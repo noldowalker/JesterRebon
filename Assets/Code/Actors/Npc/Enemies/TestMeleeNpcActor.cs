@@ -40,7 +40,6 @@ namespace Code.Actors.Npc.Enemies
             if (currentBehaviour.IsNull())
                 return;
             
-            DebugExtension.DebugNotice($"+++ {currentBehaviour.Type}");
             currentBehaviour.Act();
         }
     }
