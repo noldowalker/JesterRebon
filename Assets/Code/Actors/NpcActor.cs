@@ -15,12 +15,16 @@ using UnityEngine.AI;
 namespace Code.Actors
 {
     [RequireComponent(typeof(IdleBehaviour))]
+    [RequireComponent(typeof(DeadBehaviour))]
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
     public abstract class NpcActor : AbstractActor
     {
         public bool disableAi;
+        public bool IsDying => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dying);       
+        public bool IsDead => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dead);       
+        
         [SerializeField] private float currentHp;
         [SerializeField] private float totalHp;
         [SerializeField] private Transform hitPoint;
@@ -28,6 +32,7 @@ namespace Code.Actors
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private Rigidbody actorsRigidbody;
         [SerializeField] private Collider actorsCollider;
+        
         protected AbstractBehaviour currentBehaviour;
         protected List<AbstractBehaviour> behaviours;
         
@@ -61,7 +66,7 @@ namespace Code.Actors
 
         public virtual void ReactOnHit(float force, float timeOfStun, Vector3 direction)
         {
-            if (IsNotDead())
+            if (!IsDying)
             {
                 var settings = new HitReactionBehaviourSettings()
                 {
@@ -113,21 +118,16 @@ namespace Code.Actors
 
         public virtual void TakeDamage(float damage)
         {
-            if (IsNotDead())
+            if (!IsDying)
             {
                 currentHp -= damage;
                 if (currentHp <= 0)
                 {
                     Debug.Log("Enemy is dead");
-                    ChangeBehaviourTo(BehaviourType.Death);
+                    ChangeBehaviourTo(BehaviourType.Dying);
                 }
             }
             
-        }
-
-        public virtual bool IsNotDead()
-        {
-            return currentBehaviour.Type != BehaviourType.Death;
         }
 
         /* public virtual bool IsGrounded()
@@ -147,8 +147,14 @@ namespace Code.Actors
             
             if (currentBehaviour != null)
             {
-                currentBehaviour.OnEnd();
                 currentBehaviour.onBehaviourEnd -= BackToIdle;
+                currentBehaviour.OnEnd();
+                
+                if (IsDead)
+                    return;
+                
+                if (IsDying)
+                    type = BehaviourType.Dead;
             }
 
             currentBehaviour = behaviours.GetHighestPriorityBehaviour(type);

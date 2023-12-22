@@ -25,11 +25,13 @@ namespace Code.Actors.Npc.Enemies
                 ChangeBehaviourTo(BehaviourType.Search);
                 return;
             }
+            
             if (InAttackDistance(_playerTransform))
             {
                 MeleeAttackTarget(_playerTransform);
                 return;
             }
+            
             ChangeBehaviourTo(BehaviourType.Move);
         }
         
@@ -38,6 +40,7 @@ namespace Code.Actors.Npc.Enemies
             if (currentBehaviour.IsNull())
                 return;
             
+            DebugExtension.DebugNotice($"+++ {currentBehaviour.Type}");
             currentBehaviour.Act();
         }
     }

@@ -26,7 +26,7 @@ namespace Code.Actors.Behaviours
             RaycastHit hit;
             if(Physics.SphereCast(transform.position,sensorCastRadius,transform.forward*sensorCastLength,out hit))
             {
-                if(hit.transform.tag == "Player")
+                if(hit.transform.CompareTag("Player"))
                 {
                     Enter(hit.transform);
                 }
@@ -54,11 +54,9 @@ namespace Code.Actors.Behaviours
             actor.SetPlayerLink(null);
         }
 
-        private void OnValidate()
+        private void OnDestroy()
         {
-           /* if (sensor == null)
-                DebugExtension.Warning($"{gameObject.name} has no sensor for LookForPlayerBehaviour");*/
+            
         }
-       
     }
 }

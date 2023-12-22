@@ -8,6 +8,7 @@ namespace Code.Actors.Behaviours
         RangedAttack,
         Search,
         ReactOnHit,
-        Death
+        Dying,
+        Dead
     }
 }

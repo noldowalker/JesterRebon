@@ -1,27 +1,28 @@
 using Assets.Code.Boot.GlobalEvents.DataObjects;
 using System;
 using System.Collections;
+using Code.Boot.Logging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Code.Actors.Behaviours
 {
-    public class DeathBehaviour : AbstractBehaviour
+    public class DyingBehaviour : AbstractBehaviour
     {
         public float timeBeforeDestroy;
 
         private float _remainingTime;
 
-        public override BehaviourType Type => BehaviourType.Death;
+        public override BehaviourType Type => BehaviourType.Dying;
         
         public override void Act()
         {
             _remainingTime += Time.deltaTime;
             if (_remainingTime <= timeBeforeDestroy)
                 return;
-            OnEnd();
-            onBehaviourEnd.Invoke();
+            
+            onBehaviourEnd?.Invoke();
         }
 
         public override void OnStart<T>(T settings)
@@ -37,9 +38,6 @@ namespace Code.Actors.Behaviours
 
         public override void OnEnd()
         {
-            //TODO REFACTOR
-            Destroy(gameObject);
         }
-
     }
 }

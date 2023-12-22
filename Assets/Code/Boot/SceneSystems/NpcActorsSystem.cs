@@ -34,10 +34,12 @@ namespace Code.Boot.Systems
 
         private List<TestMeleeNpcActor> _enemiesToSpawnPool;
         private List<TestMeleeNpcActor> _activeEnemies;
+        private List<TestMeleeNpcActor> _removedEnemies;
         
 
         public void Init()
         {
+            _removedEnemies = new List<TestMeleeNpcActor>();
             _activeEnemies = GetComponentsInChildren<TestMeleeNpcActor>().ToList().Where(a => a.enabled).ToList();
             _activeEnemies.ForEach(a =>
             {
@@ -105,6 +107,7 @@ namespace Code.Boot.Systems
                 return;
             }
             
+            ClearRemovedPool();
             _activeEnemies.ForEach(ae => ae.Act());
         }
         
@@ -171,6 +174,26 @@ namespace Code.Boot.Systems
             }
 
             return result;
+        }
+
+        private void ClearRemovedPool()
+        {
+            if (_activeEnemies.Any(a => a.IsDead))
+            {
+                _removedEnemies.AddRange(_activeEnemies.Where(a => a.IsDead));
+                _activeEnemies.RemoveAll(a => a.IsDead);
+            }
+            
+            if (_removedEnemies.Count == 0)
+                return;
+
+            foreach (var enemy in _removedEnemies)
+            {
+                enemy.Act();
+                Destroy(enemy.gameObject);
+            }
+            
+            _removedEnemies.Clear();
         }
     }
 }
