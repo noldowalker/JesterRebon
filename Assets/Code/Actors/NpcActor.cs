@@ -9,6 +9,7 @@ using Code.Actors.Player;
 using Code.Actors.Player.Settings;
 using Code.Boot.Logging;
 using Code.Helpers.GlobalExtensions;
+using Code.Vfx;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +20,7 @@ namespace Code.Actors
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(VfxSystem))]
     public abstract class NpcActor : AbstractActor
     {
         public bool disableAi;
@@ -32,6 +34,7 @@ namespace Code.Actors
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private Rigidbody actorsRigidbody;
         [SerializeField] private Collider actorsCollider;
+        [SerializeField] private VfxSystem vfxSystem;
         
         protected AbstractBehaviour currentBehaviour;
         protected List<AbstractBehaviour> behaviours;
@@ -57,6 +60,13 @@ namespace Code.Actors
             {
                 ChangeBehaviourTo(BehaviourType.Idle);
             }
+            
+            vfxSystem.Init();
+        }
+
+        public virtual void Act()
+        {
+            vfxSystem.ObserveActiveEffects();
         }
 
         public virtual void SetPlayerLink(Transform playerTransform)

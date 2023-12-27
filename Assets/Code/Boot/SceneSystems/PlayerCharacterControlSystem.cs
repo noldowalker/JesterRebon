@@ -65,12 +65,15 @@ namespace Code.Boot.SceneSystems
 
         public void Act()
         {
+            _actor.ObserveVfxEffects();
+            
             if (!_actor.controlLocked)
             {
                 Move();
                 Dash();
                 _actor.ProcessTimingActions();
             }
+            
             if (!_actor.cameraLocked)
             {
                 _springArm.Rotate(_yaw, _pitch);

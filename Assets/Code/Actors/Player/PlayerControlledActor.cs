@@ -5,6 +5,7 @@ using Assets.Code.Boot.GlobalEvents.Enum;
 using Code.Actors.Player.Settings;
 using Code.Boot.GlobalEvents;
 using Code.Boot.Logging;
+using Code.Vfx;
 using UnityEngine;
 
 namespace Code.Actors.Player
@@ -12,13 +13,14 @@ namespace Code.Actors.Player
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(Transform))]
-
+    [RequireComponent(typeof(VfxSystem))]
     public class PlayerControlledActor : AbstractActor
     {
         [SerializeField] private CapsuleCollider capsuleCollider;
         [SerializeField] private CharacterController characterController;
         [SerializeField] private Transform hitPoint;
-
+        [SerializeField] private VfxSystem vfxSystem;
+        
         public bool controlLocked;
         public bool cameraLocked;
         public PlayerCharacterSettings settings;
@@ -73,6 +75,8 @@ namespace Code.Actors.Player
             _isAttacked = false;
             _isRestoringDashPoints = false;
 
+            vfxSystem.Init();
+            
             DebugExtension.InitNotice("Player initiated");
         }
 
@@ -111,6 +115,7 @@ namespace Code.Actors.Player
         {
             if (!IsFalling() || DoubleJump())
             {
+                vfxSystem.TryTurnOnEffect("jump");
                 _currentMovement.y = settings.jumpHeight;
             }
         }
@@ -182,8 +187,6 @@ namespace Code.Actors.Player
             }
             
         }
-
-        
 
         public bool IsFalling()
         {
@@ -326,6 +329,10 @@ namespace Code.Actors.Player
             }*/
         }
 
+        public void ObserveVfxEffects()
+        {
+            vfxSystem.ObserveActiveEffects();
+        }
         private void InitStats()
         {
             _currentHp = settings.totalHP;

@@ -35,8 +35,10 @@ namespace Code.Actors.Npc.Enemies
             ChangeBehaviourTo(BehaviourType.Move);
         }
         
-        public void Act()
+        public override void Act()
         {
+            base.Act();
+            
             if (currentBehaviour.IsNull())
                 return;
             
