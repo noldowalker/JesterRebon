@@ -23,6 +23,7 @@ namespace Code.Boot.DependencyInjection
             builder.RegisterComponentInHierarchy<NpcActorsSystem>();
             builder.RegisterComponentInHierarchy<PlayerCharacterControlSystem>();
             builder.RegisterComponentInHierarchy<EnvironmentSystem>();
+            builder.RegisterComponentInHierarchy<PlayerSkillHandling>();
             
             #endregion Global Systems for Injection
             

@@ -38,9 +38,12 @@ namespace Code.Actors.Behaviours
             _direction = hitReactionSettings.direction;
             _force = hitReactionSettings.force;
             _timeInStunnedCondition = 0;
-            
-            actor.ActorsRigidbody.isKinematic = false;
-            actor.ActorsRigidbody.AddForce(_direction * _force * 10, ForceMode.Impulse);
+
+            if (_force > 0)
+            {
+                actor.ActorsRigidbody.isKinematic = false;
+                actor.ActorsRigidbody.AddForce(_direction * _force * 10, ForceMode.Impulse);
+            }
         }
 
         public override void OnEnd()

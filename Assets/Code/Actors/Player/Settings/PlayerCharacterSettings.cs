@@ -11,6 +11,7 @@ namespace Code.Actors.Player.Settings
         public float totalHP;
         public int totalDashPoints;
         public int totalDoubleJumps;
+        public int attacksBeforeFinisher;
 
         [Space]
         [Header("Movement Settings \n-----------------------")]
@@ -35,6 +36,8 @@ namespace Code.Actors.Player.Settings
         public float splashRadius;
         public float splashPushForce;
         public float doubleJumpCastRadius;
+        public float finisherDashForce;
+        public float finisherPushForce;
 
         [Space]
         [Header("Damage Settings \n-----------------------")]
@@ -43,6 +46,7 @@ namespace Code.Actors.Player.Settings
         public float kickDamage;
         public float splashDamage;
         public float doubleJumpDamage;
+        public float finisherDamage;
 
         [Space]
         [Header("Timer Settings \n-----------------------")]
@@ -57,5 +61,9 @@ namespace Code.Actors.Player.Settings
         public float kickStunTime;
         public float splashStunTime;
         public float dashPointsRestoreTime;
+        public float comboBreakTime;
+        public float finisherTime;
+        public float finisherCoolDown;
+        public float finisherStunTime;
     }
 }

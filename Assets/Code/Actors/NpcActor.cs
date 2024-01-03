@@ -23,8 +23,8 @@ namespace Code.Actors
     {
         public bool disableAi;
         public bool IsDying => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dying);       
-        public bool IsDead => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dead);       
-        
+        public bool IsDead => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dead);
+
         [SerializeField] private float currentHp;
         [SerializeField] private float totalHp;
         [SerializeField] private Transform hitPoint;
@@ -33,6 +33,7 @@ namespace Code.Actors
         [SerializeField] private Rigidbody actorsRigidbody;
         [SerializeField] private Collider actorsCollider;
         
+
         protected AbstractBehaviour currentBehaviour;
         protected List<AbstractBehaviour> behaviours;
         
@@ -53,10 +54,7 @@ namespace Code.Actors
             navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.enabled = true;
             behaviours = GetComponents<AbstractBehaviour>().ToList();
-            if (!disableAi)
-            {
-                ChangeBehaviourTo(BehaviourType.Idle);
-            }
+            BackToIdle();
         }
 
         public virtual void SetPlayerLink(Transform playerTransform)
@@ -79,6 +77,21 @@ namespace Code.Actors
             }
         }
 
+        public virtual void StartDancing(float duration, float damage, float damagePeriod)
+        {
+            if (!IsDying && (currentBehaviour == null || currentBehaviour.Type != BehaviourType.Dancing))
+            {
+                Debug.Log("Boom");
+                var settings = new DancingBehaviourSettings()
+                {
+                    duration = duration,
+                    damage = damage,
+                    damagePeriod = damagePeriod,
+                };
+
+                ChangeBehaviourTo(BehaviourType.Dancing, settings);
+            }
+        }
 
         public virtual bool IsEnemy(Transform target)
         {
@@ -121,6 +134,7 @@ namespace Code.Actors
             if (!IsDying)
             {
                 currentHp -= damage;
+                Debug.Log(string.Format("Enemy got {0}, remainingHP: {1}", damage, currentHp));
                 if (currentHp <= 0)
                 {
                     Debug.Log("Enemy is dead");
@@ -137,7 +151,9 @@ namespace Code.Actors
  */
         protected void BackToIdle()
         {
-            ChangeBehaviourTo(BehaviourType.Idle);
+            var idleSettings = new IdleBehaviourSettings()
+            { disableAI = disableAi };
+            ChangeBehaviourTo(BehaviourType.Idle, idleSettings);
         }
 
         protected void ChangeBehaviourTo(BehaviourType type, AbstractBehaviourSettings settings = null)

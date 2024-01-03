@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Code.Actors.Npc.Enemies;
@@ -160,6 +161,14 @@ namespace Code.Boot.Systems
             enemy.ReactOnHit(force, timeOfStun, direction);
         }
 
+        public void StartDancing(GameObject obj, float duration, float damage, float damagePeriod)
+        {
+            var enemy = _activeEnemies.FirstOrDefault(e => e.gameObject == obj);
+            if (enemy == null)
+                return;
+            enemy.StartDancing(duration, damage, damagePeriod);
+        }
+
         private List<TestMeleeNpcActor> CreateEnemiesPool()
         {
             var result = new List<TestMeleeNpcActor>();
@@ -172,6 +181,7 @@ namespace Code.Boot.Systems
                         for (var i = 0; i < npcSpawnSetting.amount; i++)
                         {
                             var newEnemy = Instantiate(npcSpawnSetting.prefub, poolEnemiesContainer);
+                            newEnemy.name = newEnemy.name + Guid.NewGuid().ToString();
                             result.Add(newEnemy);
                         }
                     }

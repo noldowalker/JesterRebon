@@ -11,5 +11,7 @@ namespace Assets.Code.Boot.GlobalEvents.Enum
         UNDEFINED,
         ENEMY_HIT,
         PLAYER_HIT,
+        ENEMY_DANCING,
+        ACTIVATE_SKILL,
     }
 }

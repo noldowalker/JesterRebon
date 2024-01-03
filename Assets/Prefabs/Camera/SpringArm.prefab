@@ -59,7 +59,7 @@ MonoBehaviour:
   useControlRotation: 1
   mouseSensitivity: 10
   minClampRotation: -30
-  maxClampRotation: 60
+  maxClampRotation: 30
   visualDebugging: 1
   springArmColor: {r: 0.75, g: 0.2, b: 0.2, a: 0.75}
   springArmLineWidth: 6

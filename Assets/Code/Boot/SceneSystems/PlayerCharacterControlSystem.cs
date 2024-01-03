@@ -50,6 +50,9 @@ namespace Code.Boot.SceneSystems
             _inputActions.actions.punch.canceled += OnPunch;
             _inputActions.actions.kick.performed += OnKick;
             _inputActions.actions.kick.canceled += OnKick;
+            _inputActions.actions._1stSkill.started += OnUse1Skill;
+            _inputActions.actions._2ndSkill.started += OnUse2Skill;
+
             _currentMovement = Vector3.zero;
         }
 
@@ -65,16 +68,10 @@ namespace Code.Boot.SceneSystems
 
         public void Act()
         {
-            if (!_actor.controlLocked)
-            {
-                Move();
-                Dash();
-                _actor.ProcessTimingActions();
-            }
-            if (!_actor.cameraLocked)
-            {
-                _springArm.Rotate(_yaw, _pitch);
-            }
+            Move();
+            Dash();
+            _springArm.Rotate(_yaw, _pitch);
+            _actor.ProcessTimingActions();
         }
 
         public void HandlePlayerHit(float damage, float pushForce, float pushTime, Vector3 pushDirection, float stunTime)
@@ -100,7 +97,9 @@ namespace Code.Boot.SceneSystems
         
 
         private void OnJump(InputAction.CallbackContext ctx)
-        {           
+        {
+            if (_actor.controlLocked)
+                return;
             if (ctx.ReadValueAsButton())
             {
                 _actor.Jump();
@@ -109,29 +108,41 @@ namespace Code.Boot.SceneSystems
 
         private void OnRight(InputAction.CallbackContext ctx)
         {
+            if (_actor.controlLocked)
+                return;
             _moveX = ctx.ReadValue<float>();
             _movementPressed = _moveX != 0 || _moveY != 0;
         }
         
         private void OnForward(InputAction.CallbackContext ctx)
         {
+            if (_actor.controlLocked)
+                return;
             _moveY = ctx.ReadValue<float>();
             _movementPressed = _moveX != 0 || _moveY != 0;
         }
         private void OnRotateX(InputAction.CallbackContext ctx)
         {
+            if (_actor.cameraLocked)
+                return;
             _yaw = ctx.ReadValue<float>();
         }
         private void OnRotateY(InputAction.CallbackContext ctx)
         {
+            if (_actor.cameraLocked)
+                return;
             _pitch = ctx.ReadValue<float>();
         }
         private void OnDash(InputAction.CallbackContext ctx)
         {
+            if (_actor.controlLocked)
+                return;
             _dashPressed = ctx.ReadValueAsButton();
         }
         private void OnPunch(InputAction.CallbackContext ctx)
         {
+            if (_actor.controlLocked)
+                return;
             if (ctx.ReadValueAsButton())
             {
                 if (!_actor.IsFalling())
@@ -145,6 +156,8 @@ namespace Code.Boot.SceneSystems
         }
         private void OnKick(InputAction.CallbackContext ctx)
         {
+            if (_actor.controlLocked)
+                return;
             if (ctx.ReadValueAsButton())
             {
                 if (!_actor.IsFalling())
@@ -156,6 +169,20 @@ namespace Code.Boot.SceneSystems
                     _actor.Splash();
                 }
             }
+        }
+
+        private void OnUse1Skill(InputAction.CallbackContext ctx)
+        {
+            if (_actor.controlLocked)
+                return;
+            _actor.ActivateSkill("1");
+        }
+
+        private void OnUse2Skill(InputAction.CallbackContext ctx)
+        {
+            if (_actor.controlLocked)
+                return;
+            _actor.ActivateSkill("2");
         }
     }
 }

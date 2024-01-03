@@ -52,6 +52,8 @@ GameObject:
   - component: {fileID: -4468167364817973931}
   - component: {fileID: 567604423099605082}
   - component: {fileID: 1056418381122322891}
+  - component: {fileID: 2534204484897989926}
+  - component: {fileID: -5135645892891161085}
   m_Layer: 6
   m_Name: TestEnemyPrefub
   m_TagString: Enemy
@@ -134,7 +136,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2160882956382810709}
-  m_Material: {fileID: 13400000, guid: a1e4b91683611fa4fb609afde4cf5872, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -315,6 +317,34 @@ MonoBehaviour:
   priority: 0
   actor: {fileID: 7092087178493391488}
   timeBeforeDestroy: 5
+--- !u!114 &2534204484897989926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2160882956382810709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ebc13c155f407b8be8964e9551db90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 0
+  actor: {fileID: 7092087178493391488}
+--- !u!114 &-5135645892891161085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2160882956382810709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04bbcd1b8aa88f4f939aeecb2dcca70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 0
+  actor: {fileID: 7092087178493391488}
 --- !u!1 &2309964208799603637
 GameObject:
   m_ObjectHideFlags: 0

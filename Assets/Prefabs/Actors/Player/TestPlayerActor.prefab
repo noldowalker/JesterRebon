@@ -166,7 +166,7 @@ CharacterController:
   m_Radius: 0.55
   m_SlopeLimit: 30
   m_StepOffset: 0.1
-  m_SkinWidth: 0.3
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &6912725353454818530
@@ -184,13 +184,17 @@ MonoBehaviour:
   capsuleCollider: {fileID: 9132367445712611707}
   characterController: {fileID: 4278161008510892674}
   hitPoint: {fileID: 2334774023979972773}
-  rigidBody: {fileID: 0}
+  boxingGloveSkillPrefab: {fileID: 6504574673562707235, guid: 0dfd371866b18ab4ea08a71ef501ce90,
+    type: 3}
+  dancingAuraSkillPrefab: {fileID: 5081929047007372886, guid: aa29695dc395ffd4aa288e485b633161,
+    type: 3}
   controlLocked: 0
   cameraLocked: 0
   settings:
     totalHP: 0
     totalDashPoints: 0
     totalDoubleJumps: 0
+    attacksBeforeFinisher: 0
     moveSpeed: 0
     jumpHeight: 0
     turnSmoothTime: 0
@@ -207,10 +211,13 @@ MonoBehaviour:
     splashRadius: 0
     splashPushForce: 0
     doubleJumpCastRadius: 0
+    finisherDashForce: 0
+    finisherPushForce: 0
     punchDamage: 0
     kickDamage: 0
     splashDamage: 0
     doubleJumpDamage: 0
+    finisherDamage: 0
     dashTime: 0
     dashCoolDown: 0
     punchTime: 0
@@ -221,6 +228,10 @@ MonoBehaviour:
     kickStunTime: 0
     splashStunTime: 0
     dashPointsRestoreTime: 0
+    comboBreakTime: 0
+    finisherTime: 0
+    finisherCoolDown: 0
+    finisherStunTime: 0
 --- !u!1 &5142327851834862911
 GameObject:
   m_ObjectHideFlags: 0

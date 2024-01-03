@@ -18,6 +18,7 @@ MonoBehaviour:
     totalHP: 100
     totalDashPoints: 3
     totalDoubleJumps: 3
+    attacksBeforeFinisher: 3
     moveSpeed: 5
     jumpHeight: 5
     turnSmoothTime: 0.1
@@ -33,11 +34,14 @@ MonoBehaviour:
     magnetCastRadius: 3
     splashRadius: 5
     splashPushForce: 40
-    doubleJumpCastRadius: 0.1
+    doubleJumpCastRadius: 0.2
+    finisherDashForce: 20
+    finisherPushForce: 70
     punchDamage: 20
     kickDamage: 10
     splashDamage: 15
     doubleJumpDamage: 5
+    finisherDamage: 50
     dashTime: 0.15
     dashCoolDown: 1
     punchTime: 0.1
@@ -45,6 +49,10 @@ MonoBehaviour:
     punchStunTime: 0.5
     kickTime: 0.15
     kickCoolDown: 0.8
-    kickStunTime: 5
+    kickStunTime: 1
     splashStunTime: 3
     dashPointsRestoreTime: 5
+    comboBreakTime: 1
+    finisherTime: 0.5
+    finisherCoolDown: 0.5
+    finisherStunTime: 2

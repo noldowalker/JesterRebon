@@ -17,7 +17,8 @@ namespace Code.Boot.Systems
         [Inject] private NpcActorsSystem _npcActorsSystem;
         [Inject] private EnvironmentSystem _environmentSystem;
         [Inject] private PlayerCharacterControlSystem _playerCharacterControlSystem;
-        [Inject] private PlayerControlledActorContainer _playerControlledActorContainer;       
+        [Inject] private PlayerControlledActorContainer _playerControlledActorContainer;
+        [Inject] private PlayerSkillHandling _playerSkillHandling;
 
         private bool initiated;
         
@@ -47,7 +48,7 @@ namespace Code.Boot.Systems
             _playerCharacterControlSystem.Init();
             var playerActor = _playerControlledActorContainer.CreateInstance();
             _playerCharacterControlSystem.SetControlledActor(playerActor);
-            //_springArm.SetTarget(playerActor.transform);
+            _playerSkillHandling.Init();
 
             initiated = true;
             Subscribe();

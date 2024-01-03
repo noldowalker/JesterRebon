@@ -6,6 +6,7 @@ using Code.Actors.Player.Settings;
 using Code.Boot.GlobalEvents;
 using Code.Boot.Logging;
 using UnityEngine;
+using VContainer;
 
 namespace Code.Actors.Player
 {
@@ -18,7 +19,10 @@ namespace Code.Actors.Player
         [SerializeField] private CapsuleCollider capsuleCollider;
         [SerializeField] private CharacterController characterController;
         [SerializeField] private Transform hitPoint;
-
+        /*[Header("Skill prefabs \n-----------------------")]
+        [SerializeField] private BoxingGloveSkill boxingGloveSkillPrefab;
+        [SerializeField] private DancingAuraSkill dancingAuraSkillPrefab;
+        [Header("-----------------------")]*/
         public bool controlLocked;
         public bool cameraLocked;
         public PlayerCharacterSettings settings;
@@ -31,6 +35,7 @@ namespace Code.Actors.Player
         private float _currentHp;
         private int _currentDashPoints;
         private int _currentDoubleJumps;
+        private int _currentAttackCount;
         //Flags
         private bool _canMove;
         private bool _canDash;
@@ -43,9 +48,11 @@ namespace Code.Actors.Player
         private bool _canApplyDamage;
         private bool _isRestoringDashPoints;
         private bool _isAttacked;
+        private bool _isPerformFinisher;
 
         //Temporal constants
         private Vector3 _tempAttackPush;
+        private float _currentComboBreakTimer;
 
 
         public override void Init(AbstractSettings settings)
@@ -72,6 +79,8 @@ namespace Code.Actors.Player
             _isSplashing = false;
             _isAttacked = false;
             _isRestoringDashPoints = false;
+            _isPerformFinisher = false;
+
 
             DebugExtension.InitNotice("Player initiated");
         }
@@ -101,9 +110,10 @@ namespace Code.Actors.Player
             if (!_isDashing)
             {
                 characterController.Move(_currentMovement * settings.moveSpeed * Time.deltaTime);
-            } else
+            }
+            else
             {
-                characterController.Move(new Vector3 (_currentMovement.x,0,_currentMovement.z) * settings.dashForce * Time.deltaTime);
+                characterController.Move(new Vector3(_currentMovement.x, 0, _currentMovement.z) * settings.dashForce * Time.deltaTime);
             }
         }
 
@@ -126,7 +136,7 @@ namespace Code.Actors.Player
             if (_currentDoubleJumps > 0 && IsFalling())
             {
                 //Check enemy under player. If exists then it take damage, and player perform double jump
-                Collider[] hits = Physics.OverlapSphere(hitPoint.position, settings.doubleJumpCastRadius);
+                Collider[] hits = Physics.OverlapSphere(transform.position, settings.doubleJumpCastRadius);
                 foreach (Collider hit in hits)
                 {
                     if (hit.transform.tag == "Enemy")
@@ -156,7 +166,7 @@ namespace Code.Actors.Player
                 _canDash = false;
                 _isDashing = true;
                 _currentDashPoints--;
-                StartCoroutine(DashPerform());           
+                StartCoroutine(DashPerform());
             }
         }
 
@@ -167,6 +177,16 @@ namespace Code.Actors.Player
                 _canPunch = false;
                 _canMove = false;
                 _isPunching = true;
+                if (_isPerformFinisher)
+                {
+                    _isPerformFinisher = false;
+                }
+                if (_currentAttackCount > settings.attacksBeforeFinisher)
+                {
+                    _currentAttackCount = 0;
+                    _currentComboBreakTimer = 0;
+                    _isPerformFinisher = true;
+                }
                 StartCoroutine(PunchPerform());
             }
         }
@@ -180,28 +200,37 @@ namespace Code.Actors.Player
                 _isKicking = true;
                 StartCoroutine(KickPerform());
             }
-            
+
         }
 
-        
+
 
         public bool IsFalling()
         {
             //Todo refactor for exclude enemies for ground detection
-            return !characterController.isGrounded;
+            //return !characterController.isGrounded;
+             
+            Collider[] hits = Physics.OverlapSphere(transform.position, settings.doubleJumpCastRadius);
+            foreach (Collider hit in hits)
+            {
+                if (hit.transform.tag == "ground")
+                    return false;
+            }
+
+            return true;
         }
 
         public void ProcessTimingActions()
         {
             //Processing Snapping to nearest enemy
-            if(_isKicking || _isPunching)
+            if (_isKicking || _isPunching)
             {
                 Collider[] hits = Physics.OverlapSphere(hitPoint.position, settings.magnetCastRadius);
                 foreach (Collider hit in hits)
                 {
                     if (hit.transform.tag == "Enemy")
                     {
-                        transform.LookAt(new Vector3(hit.transform.position.x,transform.position.y,hit.transform.position.z));
+                        transform.LookAt(new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z));
                         break;
                     }
                 }
@@ -223,7 +252,7 @@ namespace Code.Actors.Player
                                 direction = transform.forward,
                                 force = settings.kickPushForce,
                                 enemy = hit.transform.gameObject,
-                                timeOfStun = 5,
+                                timeOfStun = settings.kickStunTime,
                             };
                             GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                             //_isKicking = false;
@@ -247,11 +276,11 @@ namespace Code.Actors.Player
                         {
                             var hitData = new EnemyHitDto()
                             {
-                                damage = settings.punchDamage,
+                                damage = !_isPerformFinisher ? settings.punchDamage : settings.finisherDamage,
                                 direction = transform.forward,
-                                force = settings.punchPushForce,
+                                force = !_isPerformFinisher ? settings.punchPushForce : settings.finisherPushForce,
                                 enemy = hit.transform.gameObject,
-                                timeOfStun = settings.punchStunTime,
+                                timeOfStun = !_isPerformFinisher ? settings.punchStunTime : settings.finisherStunTime,
                             };
                             GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                             _canApplyDamage = false;
@@ -259,7 +288,7 @@ namespace Code.Actors.Player
                         }
                     }
                 }
-                characterController.Move(transform.forward * settings.punchDashForce * Time.deltaTime);
+                characterController.Move(transform.forward * (!_isPerformFinisher ? settings.punchDashForce : settings.finisherDashForce) * Time.deltaTime);
             }
             //Processing fall with Splash action
             if (_isSplashing && !IsFalling())
@@ -280,17 +309,17 @@ namespace Code.Actors.Player
                             enemy = hit.transform.gameObject,
                             timeOfStun = settings.kickStunTime,
                         };
-                        GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);                      
+                        GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                     }
                 }
             }
             //Processing double jump reset counter
-            if(_currentDoubleJumps < settings.totalDoubleJumps && !IsFalling())
+            if (_currentDoubleJumps < settings.totalDoubleJumps && !IsFalling())
             {
                 _currentDoubleJumps = settings.totalDoubleJumps;
             }
             //Processing restoring dashPoints
-            if(!_isRestoringDashPoints && _currentDashPoints < settings.totalDashPoints)
+            if (!_isRestoringDashPoints && _currentDashPoints < settings.totalDashPoints)
             {
                 _isRestoringDashPoints = true;
                 StartCoroutine(RestoreDashPoints());
@@ -300,12 +329,24 @@ namespace Code.Actors.Player
             {
                 characterController.Move(_tempAttackPush * Time.deltaTime);
             }
+            //Processing reseting attack count on exceeding combo break timer
+            if (_currentAttackCount > 0)
+            {
+                _currentComboBreakTimer += Time.deltaTime;
+                if (_currentComboBreakTimer >= settings.comboBreakTime)
+                {
+                    _currentComboBreakTimer = 0;
+                    _currentAttackCount = 0;
+                }
+            }
         }
 
         public void TakeDamage(float damage)
         {
+            if (_isDashing)
+                return;
             _currentHp -= damage;
-            Debug.Log(string.Format("Player got {0}, remainingHP: {1}",damage,_currentHp));
+            Debug.Log(string.Format("Player got {0}, remainingHP: {1}", damage, _currentHp));
             if (_currentHp <= 0)
             {
                 Time.timeScale = 0;
@@ -315,15 +356,37 @@ namespace Code.Actors.Player
 
         public void ReactOnHit(float pushForce, float pushTime, Vector3 pushDirection, float stunTime)
         {
+            if (_isDashing)
+                return;
             _isAttacked = true;
             _tempAttackPush = pushForce * pushDirection;
             StartCoroutine(BeingAttacked(pushTime));
-            /*if (stunTime > 0)
+            if (stunTime > 0)
             {
                 //handle stun
                 controlLocked = true;
                 StartCoroutine(BeingStunned(stunTime));
-            }*/
+            }
+        }
+
+        /*public void BoxingGloveSkill()
+        {
+            Instantiate(boxingGloveSkillPrefab, hitPoint.position, transform.rotation);
+        }
+
+        public void DancingAuraSkill()
+        {
+            Instantiate(dancingAuraSkillPrefab, transform.position + transform.up * 5, transform.rotation);
+        }*/
+
+        public void ActivateSkill(string key)
+        {
+            var skillData = new SkillDto()
+            {
+                button = key,
+                playerTransform = transform
+            };
+            GlobalEventsSystem<SkillDto>.FireEvent(GlobalEventType.ACTIVATE_SKILL, skillData);
         }
 
         private void InitStats()
@@ -332,6 +395,7 @@ namespace Code.Actors.Player
             _currentDashPoints = settings.totalDashPoints;
             _currentDoubleJumps = settings.totalDoubleJumps;
         }
+
 
         private IEnumerator DashCoolDown()
         {
@@ -355,6 +419,8 @@ namespace Code.Actors.Player
             yield return new WaitForSeconds(settings.punchTime);
             _isPunching = false;
             _canMove = true;
+            _currentAttackCount++;
+            _currentComboBreakTimer = 0;
             StartCoroutine(PunchCoolDown());
         }
         private IEnumerator KickCoolDown()
@@ -401,7 +467,7 @@ namespace Code.Actors.Player
         private void OnDrawGizmos()
         {
             //Gizmos.DrawRay(hitPoint.position, (transform.forward + (transform.up/6))*10);
-            //Gizmos.DrawSphere(transform.position, settings.doubleJumpCastRadius);
+            Gizmos.DrawSphere(transform.position, settings.doubleJumpCastRadius);
         }
     }
 }

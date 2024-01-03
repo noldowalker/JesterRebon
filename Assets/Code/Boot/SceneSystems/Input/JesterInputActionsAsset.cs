@@ -98,6 +98,24 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""1stSkill"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8ede9f2-e01d-4985-b0bd-eb64c2f078c7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""2ndSkill"",
+                    ""type"": ""Button"",
+                    ""id"": ""42d4fbd3-30c5-4479-bdc3-56f4b6e94c5d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +250,28 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
                     ""action"": ""punch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4664852d-7ac8-4f24-bd78-b4f5a6ae5caf"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""1stSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c634c95f-3c9e-480d-9d98-73455c24fd37"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""2ndSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +288,8 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         m_actions_dash = m_actions.FindAction("dash", throwIfNotFound: true);
         m_actions_kick = m_actions.FindAction("kick", throwIfNotFound: true);
         m_actions_punch = m_actions.FindAction("punch", throwIfNotFound: true);
+        m_actions__1stSkill = m_actions.FindAction("1stSkill", throwIfNotFound: true);
+        m_actions__2ndSkill = m_actions.FindAction("2ndSkill", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -317,6 +359,8 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
     private readonly InputAction m_actions_dash;
     private readonly InputAction m_actions_kick;
     private readonly InputAction m_actions_punch;
+    private readonly InputAction m_actions__1stSkill;
+    private readonly InputAction m_actions__2ndSkill;
     public struct ActionsActions
     {
         private @JesterInputActionsAsset m_Wrapper;
@@ -329,6 +373,8 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         public InputAction @dash => m_Wrapper.m_actions_dash;
         public InputAction @kick => m_Wrapper.m_actions_kick;
         public InputAction @punch => m_Wrapper.m_actions_punch;
+        public InputAction @_1stSkill => m_Wrapper.m_actions__1stSkill;
+        public InputAction @_2ndSkill => m_Wrapper.m_actions__2ndSkill;
         public InputActionMap Get() { return m_Wrapper.m_actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -362,6 +408,12 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
             @punch.started += instance.OnPunch;
             @punch.performed += instance.OnPunch;
             @punch.canceled += instance.OnPunch;
+            @_1stSkill.started += instance.On_1stSkill;
+            @_1stSkill.performed += instance.On_1stSkill;
+            @_1stSkill.canceled += instance.On_1stSkill;
+            @_2ndSkill.started += instance.On_2ndSkill;
+            @_2ndSkill.performed += instance.On_2ndSkill;
+            @_2ndSkill.canceled += instance.On_2ndSkill;
         }
 
         private void UnregisterCallbacks(IActionsActions instance)
@@ -390,6 +442,12 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
             @punch.started -= instance.OnPunch;
             @punch.performed -= instance.OnPunch;
             @punch.canceled -= instance.OnPunch;
+            @_1stSkill.started -= instance.On_1stSkill;
+            @_1stSkill.performed -= instance.On_1stSkill;
+            @_1stSkill.canceled -= instance.On_1stSkill;
+            @_2ndSkill.started -= instance.On_2ndSkill;
+            @_2ndSkill.performed -= instance.On_2ndSkill;
+            @_2ndSkill.canceled -= instance.On_2ndSkill;
         }
 
         public void RemoveCallbacks(IActionsActions instance)
@@ -417,5 +475,7 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         void OnDash(InputAction.CallbackContext context);
         void OnKick(InputAction.CallbackContext context);
         void OnPunch(InputAction.CallbackContext context);
+        void On_1stSkill(InputAction.CallbackContext context);
+        void On_2ndSkill(InputAction.CallbackContext context);
     }
 }
