@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skill: {fileID: 6504574673562707235, guid: 0dfd371866b18ab4ea08a71ef501ce90, type: 3}
   skillName: 0
+  spawnPointOffset: {x: 0, y: 1, z: 0}
   coolDownTime: 20

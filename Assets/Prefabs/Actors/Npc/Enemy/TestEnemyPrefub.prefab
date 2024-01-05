@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3a4c8cad59445ea5500a7a6007a9fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableAi: 0
+  disableAi: 1
   currentHp: 100
   totalHp: 100
   hitPoint: {fileID: 5755907620821255518}

@@ -19,13 +19,12 @@ namespace Code.Actors.Player
         [SerializeField] private CapsuleCollider capsuleCollider;
         [SerializeField] private CharacterController characterController;
         [SerializeField] private Transform hitPoint;
-        /*[Header("Skill prefabs \n-----------------------")]
-        [SerializeField] private BoxingGloveSkill boxingGloveSkillPrefab;
-        [SerializeField] private DancingAuraSkill dancingAuraSkillPrefab;
-        [Header("-----------------------")]*/
+        
         public bool controlLocked;
         public bool cameraLocked;
         public PlayerCharacterSettings settings;
+
+        private Animator _animator;
 
         //Local variables
         private Vector3 _currentMovement;
@@ -63,6 +62,8 @@ namespace Code.Actors.Player
                 return;
             }
             this.settings = (PlayerCharacterSettings)settings;
+
+            _animator = GetComponentInChildren<Animator>();
 
             _gravityModifier = 1;
 
@@ -110,6 +111,9 @@ namespace Code.Actors.Player
             if (!_isDashing)
             {
                 characterController.Move(_currentMovement * settings.moveSpeed * Time.deltaTime);
+                var flatMovement = new Vector3(_currentMovement.x, 0, _currentMovement.z);
+                Debug.Log(flatMovement.magnitude);
+                _animator.SetFloat("Speed", flatMovement.magnitude);
             }
             else
             {
@@ -177,6 +181,7 @@ namespace Code.Actors.Player
                 _canPunch = false;
                 _canMove = false;
                 _isPunching = true;
+                _animator.SetBool("IsPunching",true);
                 if (_isPerformFinisher)
                 {
                     _isPerformFinisher = false;
@@ -421,6 +426,8 @@ namespace Code.Actors.Player
             _canMove = true;
             _currentAttackCount++;
             _currentComboBreakTimer = 0;
+            _animator.SetBool("IsPunching", false);
+            _animator.SetInteger("CurrentAttackCount", _currentAttackCount);
             StartCoroutine(PunchCoolDown());
         }
         private IEnumerator KickCoolDown()

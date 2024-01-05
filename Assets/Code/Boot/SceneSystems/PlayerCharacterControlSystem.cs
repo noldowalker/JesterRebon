@@ -64,6 +64,7 @@ namespace Code.Boot.SceneSystems
 
             _springArm = Instantiate(springArmPrefab);
             _springArm.SetTarget(_actor.transform);
+
         }
 
         public void Act()

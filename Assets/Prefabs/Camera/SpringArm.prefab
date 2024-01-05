@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSmoothTime: 0.05
-  targetArmLength: 9
-  socketOffset: {x: 0, y: 7.61, z: 0}
+  targetArmLength: 5
+  socketOffset: {x: 0, y: 4.5, z: 0}
   targetOffset: {x: 0, y: 0, z: 0}
   doCollisionTest: 1
   collisionTestResolution: 4
@@ -55,7 +55,7 @@ MonoBehaviour:
   collisionSmoothTime: 0.05
   collisionLayerMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 0
   useControlRotation: 1
   mouseSensitivity: 10
   minClampRotation: -30
