@@ -48,6 +48,7 @@ namespace Code.Actors.Player
         private bool _isRestoringDashPoints;
         private bool _isAttacked;
         private bool _isPerformFinisher;
+        private bool _isJumping;
 
         //Temporal constants
         private Vector3 _tempAttackPush;
@@ -81,7 +82,7 @@ namespace Code.Actors.Player
             _isAttacked = false;
             _isRestoringDashPoints = false;
             _isPerformFinisher = false;
-
+            _isJumping = false;
 
             DebugExtension.InitNotice("Player initiated");
         }
@@ -89,10 +90,15 @@ namespace Code.Actors.Player
         public void Move(Vector3 velocity, Quaternion cameraRotation)
         {
             //Handling falling
-            if (IsFalling())
+            if (_isJumping || IsFalling())
             {
                 _currentMovement.y -= settings.gravityScale * _gravityModifier * Time.deltaTime;
             }
+            else
+            {
+                _currentMovement.y = 0;
+            }
+            Debug.Log(IsFalling());
             //Handling movement
             Vector3 direction = new Vector3(velocity.x, 0, velocity.z).normalized;
             if (direction.magnitude < 0.1 || !_canMove)
@@ -112,7 +118,6 @@ namespace Code.Actors.Player
             {
                 characterController.Move(_currentMovement * settings.moveSpeed * Time.deltaTime);
                 var flatMovement = new Vector3(_currentMovement.x, 0, _currentMovement.z);
-                Debug.Log(flatMovement.magnitude);
                 _animator.SetFloat("Speed", flatMovement.magnitude);
             }
             else
@@ -125,6 +130,8 @@ namespace Code.Actors.Player
         {
             if (!IsFalling() || DoubleJump())
             {
+                _isJumping = true;
+                _animator.SetTrigger("JumpTrigger");
                 _currentMovement.y = settings.jumpHeight;
             }
         }
@@ -219,9 +226,11 @@ namespace Code.Actors.Player
             foreach (Collider hit in hits)
             {
                 if (hit.transform.tag == "ground")
+                {
+                    _isJumping = false;
                     return false;
+                }
             }
-
             return true;
         }
 
