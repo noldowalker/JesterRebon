@@ -116,6 +116,15 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""8bbcb919-b264-4463-b793-3026dcc0ec17"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -272,6 +281,17 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
                     ""action"": ""2ndSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a76684c2-a682-4b9c-963a-15284fc51212"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -290,6 +310,7 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         m_actions_punch = m_actions.FindAction("punch", throwIfNotFound: true);
         m_actions__1stSkill = m_actions.FindAction("1stSkill", throwIfNotFound: true);
         m_actions__2ndSkill = m_actions.FindAction("2ndSkill", throwIfNotFound: true);
+        m_actions_pause = m_actions.FindAction("pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -361,6 +382,7 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
     private readonly InputAction m_actions_punch;
     private readonly InputAction m_actions__1stSkill;
     private readonly InputAction m_actions__2ndSkill;
+    private readonly InputAction m_actions_pause;
     public struct ActionsActions
     {
         private @JesterInputActionsAsset m_Wrapper;
@@ -375,6 +397,7 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         public InputAction @punch => m_Wrapper.m_actions_punch;
         public InputAction @_1stSkill => m_Wrapper.m_actions__1stSkill;
         public InputAction @_2ndSkill => m_Wrapper.m_actions__2ndSkill;
+        public InputAction @pause => m_Wrapper.m_actions_pause;
         public InputActionMap Get() { return m_Wrapper.m_actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -414,6 +437,9 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
             @_2ndSkill.started += instance.On_2ndSkill;
             @_2ndSkill.performed += instance.On_2ndSkill;
             @_2ndSkill.canceled += instance.On_2ndSkill;
+            @pause.started += instance.OnPause;
+            @pause.performed += instance.OnPause;
+            @pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IActionsActions instance)
@@ -448,6 +474,9 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
             @_2ndSkill.started -= instance.On_2ndSkill;
             @_2ndSkill.performed -= instance.On_2ndSkill;
             @_2ndSkill.canceled -= instance.On_2ndSkill;
+            @pause.started -= instance.OnPause;
+            @pause.performed -= instance.OnPause;
+            @pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IActionsActions instance)
@@ -477,5 +506,6 @@ public partial class @JesterInputActionsAsset: IInputActionCollection2, IDisposa
         void OnPunch(InputAction.CallbackContext context);
         void On_1stSkill(InputAction.CallbackContext context);
         void On_2ndSkill(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 768c3bb632cc47c0a4d116cbfc10be29, type: 3}
+  m_Name: MixamoPlayerSettings
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 6912725353454818530, guid: ed84f4d36a05d6c44a66f92059c50be5,
+    type: 3}
+  settings:
+    totalHP: 100
+    totalDashPoints: 3
+    totalDoubleJumps: 3
+    attacksBeforeFinisher: 3
+    moveSpeed: 5
+    jumpHeight: 5
+    turnSmoothTime: 0.1
+    gravityScale: 10
+    splashGravityModifier: 5
+    dashForce: 30
+    punchDashForce: 5
+    punchPushForce: 30
+    kickDashForce: 20
+    kickPushForce: 150
+    kickCastRadius: 1.5
+    punchCastRadius: 1
+    magnetCastRadius: 3
+    splashRadius: 5
+    splashPushForce: 40
+    doubleJumpCastRadius: 0.2
+    finisherDashForce: 20
+    finisherPushForce: 70
+    punchDamage: 20
+    kickDamage: 10
+    splashDamage: 15
+    doubleJumpDamage: 5
+    finisherDamage: 50
+    dashTime: 0.15
+    dashCoolDown: 1
+    punchTime: 0.1
+    punchCoolDown: 0.2
+    punchStunTime: 0.5
+    kickTime: 0.15
+    kickCoolDown: 0.8
+    kickStunTime: 1
+    splashStunTime: 3
+    dashPointsRestoreTime: 5
+    comboBreakTime: 1
+    finisherTime: 0.5
+    finisherCoolDown: 0.5
+    finisherStunTime: 2
