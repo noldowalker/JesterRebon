@@ -6,6 +6,7 @@ using Code.Actors.Player.Settings;
 using Code.Boot.GlobalEvents;
 using Code.Boot.Logging;
 using UnityEngine;
+using UnityEngine.VFX;
 using VContainer;
 
 namespace Code.Actors.Player
@@ -19,7 +20,11 @@ namespace Code.Actors.Player
         [SerializeField] private CapsuleCollider capsuleCollider;
         [SerializeField] private CharacterController characterController;
         [SerializeField] private Transform hitPoint;
-        
+
+        //Temporal
+        [SerializeField] private VisualEffect impactVfx;
+        [SerializeField] private VisualEffect splashVfx;
+
         public bool controlLocked;
         public bool cameraLocked;
         public PlayerCharacterSettings settings;
@@ -90,12 +95,13 @@ namespace Code.Actors.Player
         public void Move(Vector3 velocity, Quaternion cameraRotation)
         {
             //Handling falling
-            if (_isJumping || IsFalling())
+            if (IsFalling())
             {
                 _currentMovement.y -= settings.gravityScale * _gravityModifier * Time.deltaTime;
             }
-            else
+            else if(_currentMovement.y < 0)
             {
+                _animator.SetTrigger("LandingTrigger");
                 _currentMovement.y = 0;
             }
             //Handling movement
@@ -149,7 +155,7 @@ namespace Code.Actors.Player
                 Collider[] hits = Physics.OverlapSphere(transform.position, settings.doubleJumpCastRadius);
                 foreach (Collider hit in hits)
                 {
-                    if (hit.transform.tag == "Enemy")
+                    if (hit.CompareTag("Enemy"))
                     {
                         Debug.Log("Bonk");
                         var hitData = new EnemyHitDto()
@@ -188,6 +194,8 @@ namespace Code.Actors.Player
                 _canMove = false;
                 _isPunching = true;
                 _animator.SetBool("IsPunching",true);
+                _animator.SetTrigger("Punch");
+                _animator.SetInteger("CurrentAttackCount", _currentAttackCount);
                 if (_isPerformFinisher)
                 {
                     _isPerformFinisher = false;
@@ -209,6 +217,7 @@ namespace Code.Actors.Player
                 _canKick = false;
                 _canMove = false;
                 _isKicking = true;
+                _animator.SetBool("IsKicking", true);
                 StartCoroutine(KickPerform());
             }
 
@@ -224,9 +233,8 @@ namespace Code.Actors.Player
             Collider[] hits = Physics.OverlapSphere(transform.position, settings.doubleJumpCastRadius);
             foreach (Collider hit in hits)
             {
-                if (hit.transform.tag == "ground")
+                if (hit.CompareTag("ground"))
                 {
-                    _isJumping = false;
                     return false;
                 }
             }
@@ -241,7 +249,7 @@ namespace Code.Actors.Player
                 Collider[] hits = Physics.OverlapSphere(hitPoint.position, settings.magnetCastRadius);
                 foreach (Collider hit in hits)
                 {
-                    if (hit.transform.tag == "Enemy")
+                    if (hit.CompareTag("Enemy"))
                     {
                         transform.LookAt(new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z));
                         break;
@@ -257,7 +265,7 @@ namespace Code.Actors.Player
                     Collider[] hits = Physics.OverlapSphere(hitPoint.position, settings.kickCastRadius);
                     foreach (Collider hit in hits)
                     {
-                        if (hit.transform.tag == "Enemy")
+                        if (hit.CompareTag("Enemy"))
                         {
                             var hitData = new EnemyHitDto()
                             {
@@ -267,6 +275,8 @@ namespace Code.Actors.Player
                                 enemy = hit.transform.gameObject,
                                 timeOfStun = settings.kickStunTime,
                             };
+                            impactVfx.transform.position = hit.transform.position;
+                            impactVfx.Play();
                             GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                             //_isKicking = false;
                             _canApplyDamage = false;
@@ -285,7 +295,7 @@ namespace Code.Actors.Player
                     Collider[] hits = Physics.OverlapSphere(hitPoint.position, settings.punchCastRadius);
                     foreach (Collider hit in hits)
                     {
-                        if (hit.transform.tag == "Enemy")
+                        if (hit.CompareTag("Enemy"))
                         {
                             var hitData = new EnemyHitDto()
                             {
@@ -295,6 +305,8 @@ namespace Code.Actors.Player
                                 enemy = hit.transform.gameObject,
                                 timeOfStun = !_isPerformFinisher ? settings.punchStunTime : settings.finisherStunTime,
                             };
+                            impactVfx.transform.position = hit.transform.position;
+                            impactVfx.Play();
                             GlobalEventsSystem<EnemyHitDto>.FireEvent(GlobalEventType.ENEMY_HIT, hitData);
                             _canApplyDamage = false;
                             break;
@@ -306,13 +318,13 @@ namespace Code.Actors.Player
             //Processing fall with Splash action
             if (_isSplashing && !IsFalling())
             {
-                Debug.Log("Splash");
+                splashVfx.Play();
                 _isSplashing = false;
                 _gravityModifier = 1;
                 Collider[] hits = Physics.OverlapSphere(transform.position, settings.splashRadius);
                 foreach (Collider hit in hits)
                 {
-                    if (hit.transform.tag == "Enemy")
+                    if (hit.CompareTag("Enemy"))
                     {
                         var hitData = new EnemyHitDto()
                         {
@@ -371,26 +383,19 @@ namespace Code.Actors.Player
         {
             if (_isDashing)
                 return;
-            _isAttacked = true;
-            _tempAttackPush = pushForce * pushDirection;
-            StartCoroutine(BeingAttacked(pushTime));
-            if (stunTime > 0)
+            if (!_isAttacked)
             {
-                //handle stun
-                //controlLocked = true;
-                StartCoroutine(BeingStunned(stunTime));
+                _isAttacked = true;
+                _tempAttackPush = pushForce * pushDirection;
+                StartCoroutine(BeingAttacked(pushTime));
+                if (stunTime > 0)
+                {
+                    //handle stun
+                    controlLocked = true;
+                    StartCoroutine(BeingStunned(stunTime));
+                }
             }
         }
-
-        /*public void BoxingGloveSkill()
-        {
-            Instantiate(boxingGloveSkillPrefab, hitPoint.position, transform.rotation);
-        }
-
-        public void DancingAuraSkill()
-        {
-            Instantiate(dancingAuraSkillPrefab, transform.position + transform.up * 5, transform.rotation);
-        }*/
 
         public void ActivateSkill(string key)
         {
@@ -432,10 +437,9 @@ namespace Code.Actors.Player
             yield return new WaitForSeconds(settings.punchTime);
             _isPunching = false;
             _canMove = true;
+            _animator.SetBool("IsPunching", false);
             _currentAttackCount++;
             _currentComboBreakTimer = 0;
-            _animator.SetBool("IsPunching", false);
-            _animator.SetInteger("CurrentAttackCount", _currentAttackCount);
             StartCoroutine(PunchCoolDown());
         }
         private IEnumerator KickCoolDown()
@@ -449,6 +453,7 @@ namespace Code.Actors.Player
             yield return new WaitForSeconds(settings.kickTime);
             _isKicking = false;
             _canMove = true;
+            _animator.SetBool("IsKicking", false);
             StartCoroutine(KickCoolDown());
         }
 

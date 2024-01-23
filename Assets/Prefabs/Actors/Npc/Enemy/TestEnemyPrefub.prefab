@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5755907620821255518}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HitPoint
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,8 +71,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6225337549132418629}
   - {fileID: 347601350633729558}
@@ -213,11 +213,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3a4c8cad59445ea5500a7a6007a9fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableAi: 0
+  disableAi: 1
   currentHp: 100
   totalHp: 100
   hitPoint: {fileID: 5755907620821255518}
-  attackCastRadius: 3
+  attackCastRadius: 1.5
   navMeshAgent: {fileID: 8738554083430179253}
   actorsRigidbody: {fileID: -6024349722478299324}
   actorsCollider: {fileID: 7211296292751510029}
@@ -250,8 +250,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   priority: 0
   actor: {fileID: 7092087178493391488}
-  sensorCastLength: 30
-  sensorCastRadius: 9
+  sensorCastLength: 10
+  sensorCastRadius: 5
 --- !u!114 &3317162524078744558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,9 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   priority: 0
   actor: {fileID: 7092087178493391488}
-  speed: 5
-  radiusAroundTarget: 3.5
-  recalculatingPathTimer: 1
+  speed: 3
 --- !u!114 &-4468167364817973931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,12 +282,12 @@ MonoBehaviour:
   priority: 0
   actor: {fileID: 7092087178493391488}
   attackTime: 0.1
-  attackStunTime: 0.5
+  attackStunTime: 0.1
   damage: 3
   attackDashForce: 5
-  attackPushForce: 10
+  attackPushForce: 20
   attackPushTime: 0.1
-  attackCoolDown: 2
+  attackCoolDown: 1.5
 --- !u!114 &567604423099605082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,7 +359,7 @@ GameObject:
   - component: {fileID: 4909138098334838330}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -466,7 +464,7 @@ GameObject:
   - component: {fileID: 2350942229785189417}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

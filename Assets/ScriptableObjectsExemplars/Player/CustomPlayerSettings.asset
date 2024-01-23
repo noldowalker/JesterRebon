@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 768c3bb632cc47c0a4d116cbfc10be29, type: 3}
-  m_Name: BasePlayerControlledSkinnedActorSettings
+  m_Name: CustomPlayerSettings
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 6912725353454818530, guid: ed84f4d36a05d6c44a66f92059c50be5,
+  playerPrefab: {fileID: 6912725353454818530, guid: 45c7f84a15be4a5499268b3b21c032c3,
     type: 3}
   settings:
     totalHP: 100

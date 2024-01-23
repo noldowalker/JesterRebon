@@ -53,7 +53,10 @@ namespace Code.Boot.SceneSystems
             _inputActions.actions._1stSkill.started += OnUse1Skill;
             _inputActions.actions._2ndSkill.started += OnUse2Skill;
 
+            _inputActions.actions.pause.started += OnPause;
+
             _currentMovement = Vector3.zero;
+            Cursor.visible = false;
         }
 
         public void SetControlledActor(PlayerControlledActor currentActor)
@@ -184,6 +187,21 @@ namespace Code.Boot.SceneSystems
             if (_actor.controlLocked)
                 return;
             _actor.ActivateSkill("2");
+        }
+
+        private void OnPause(InputAction.CallbackContext ctx)
+        {
+            Debug.Log("Pause");
+            if (Time.timeScale == 0)
+            {
+                Time.timeScale = 1;
+                Cursor.visible = false;
+            }
+            else
+            {
+                Time.timeScale = 0;
+                Cursor.visible = true;
+            }
         }
     }
 }
