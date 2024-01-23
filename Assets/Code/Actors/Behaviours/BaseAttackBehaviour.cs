@@ -20,17 +20,26 @@ namespace Code.Actors.Behaviours
         [SerializeField] private float attackPushForce;
         [SerializeField] private float attackPushTime;
         [SerializeField] private float attackCoolDown;
+        [SerializeField] private float swingTime;
 
         private Transform _hitPoint;
         private float _attackCastRadius;
         private float _currentAttackTime;
         private float _currentCoolDownTime;
+        private float _currentSwingTime;
         private bool _canApplyDamage;
+        private bool _canAttack;
 
         public override BehaviourType Type => BehaviourType.MeleeAttack;
         
         public override void Act()
         {
+            //Weapon swing time
+            _currentSwingTime += Time.deltaTime;
+            if (_currentSwingTime <= swingTime)
+                return;
+            TurnToAttack();
+            //Attack time
             _currentAttackTime += Time.deltaTime;
             if (_currentAttackTime <= attackTime)
             {
@@ -51,13 +60,27 @@ namespace Code.Actors.Behaviours
             _attackCastRadius = newSettings.attackCastRadius;
             _currentCoolDownTime = 0;
             _currentAttackTime = 0;
-            _canApplyDamage = true;
+            _currentSwingTime = 0;
+            _canApplyDamage = false;
+            _canAttack = false;
             actor.ActorsRigidbody.isKinematic = false;
+            actor.transform.rotation.SetLookRotation(actor.PlayerPosition);
+            actor.animator.SetTrigger("Swinging");
         }
 
         public override void OnEnd()
         {
             actor.ActorsRigidbody.isKinematic = true;
+        }
+
+        private void TurnToAttack()
+        {
+            if (_canAttack)
+                return;
+            _canAttack = true;
+            actor.ActorsRigidbody.isKinematic = false;
+            _canApplyDamage = true;
+            actor.animator.SetTrigger("Attacking");
         }
 
         private void HandleAttack()
@@ -86,6 +109,10 @@ namespace Code.Actors.Behaviours
             actor.ActorsRigidbody.AddForce(transform.forward*attackPushForce,ForceMode.Impulse);
         }
 
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(_hitPoint.position, _attackCastRadius);
+        }
 
     }
 }

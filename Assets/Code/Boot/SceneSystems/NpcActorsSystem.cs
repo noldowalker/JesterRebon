@@ -55,7 +55,7 @@ namespace Code.Boot.Systems
                     Debug.LogError("NavMeshAgent is not placed on a NavMesh");
                 }
                 
-                a.Init();
+                a.Init(this);
             });
             
             _nextRoomIndex = 0;
@@ -145,7 +145,7 @@ namespace Code.Boot.Systems
                     Debug.LogError("NavMeshAgent is not placed on a NavMesh");
                 }
                 
-                newEnemy.Init();
+                newEnemy.Init(this);
                 
                 _spawnRateTimer = 0;
             }
@@ -167,6 +167,23 @@ namespace Code.Boot.Systems
             if (enemy == null)
                 return;
             enemy.StartDancing(duration, damage, damagePeriod);
+        }
+
+        public int GetActiveNpcIdx(string name)
+        {
+            for(int i = 0; i < _activeEnemies.Count; i++)
+            {
+                if (_activeEnemies[i].name.Equals(name))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public int GetActiveNpcCount()
+        {
+            return _activeEnemies.Count;
         }
 
         private List<TestMeleeNpcActor> CreateEnemiesPool()

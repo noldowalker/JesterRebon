@@ -31,6 +31,8 @@ namespace Code.Actors.Behaviours
         {
             var hitReactionSettings = settings as HitReactionBehaviourSettings;
 
+            actor.animator.SetTrigger("Hitted");
+
             if (hitReactionSettings == null)
                 return;
             

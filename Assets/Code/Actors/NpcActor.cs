@@ -8,9 +8,11 @@ using Code.Actors.Extensions;
 using Code.Actors.Player;
 using Code.Actors.Player.Settings;
 using Code.Boot.Logging;
+using Code.Boot.Systems;
 using Code.Helpers.GlobalExtensions;
 using UnityEngine;
 using UnityEngine.AI;
+using VContainer;
 
 namespace Code.Actors
 {
@@ -21,8 +23,10 @@ namespace Code.Actors
     [RequireComponent(typeof(Collider))]
     public abstract class NpcActor : AbstractActor
     {
+        private NpcActorsSystem _npcActorsSystem;
+
         public bool disableAi;
-        public bool IsDying => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dying);       
+        public bool IsDying => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dying);
         public bool IsDead => currentBehaviour != null && (currentBehaviour.Type == BehaviourType.Dead);
 
         [SerializeField] private float currentHp;
@@ -32,25 +36,32 @@ namespace Code.Actors
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private Rigidbody actorsRigidbody;
         [SerializeField] private Collider actorsCollider;
-        
+
 
         protected AbstractBehaviour currentBehaviour;
         protected List<AbstractBehaviour> behaviours;
-        
         protected Transform _playerTransform;
         public NavMeshAgent NavMeshAgent => navMeshAgent;
         public Rigidbody ActorsRigidbody => actorsRigidbody;
-
         public Collider ActorsCollider => actorsCollider;
         public Vector3 PlayerPosition => _playerTransform.IsNotNull() ? _playerTransform.position : Vector3.negativeInfinity;
 
-        public void Init()
+        public Animator animator;
+
+        private Rigidbody[] _rigidbodies;
+        
+
+        public void Init(NpcActorsSystem systemRef)
         {
             Init(new BlankSettings());
+            _npcActorsSystem = systemRef;
         }
 
         public override void Init(AbstractSettings settings)
         {
+            _rigidbodies = GetComponentsInChildren<Rigidbody>();
+            animator = GetComponentInChildren<Animator>();
+            ToggleRagdoll(false);
             navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.enabled = true;
             behaviours = GetComponents<AbstractBehaviour>().ToList();
@@ -144,11 +155,24 @@ namespace Code.Actors
             
         }
 
-        /* public virtual bool IsGrounded()
-         {
-             return Physics.Raycast(transform.position, -Vector3.up, collider.bounds.extents.y + 0.1f);
-         }
- */
+        public HiveInfo GetNpcHiveInfo()
+        {
+            var info = new HiveInfo();
+            info.currentNpcCount = _npcActorsSystem.GetActiveNpcCount();
+            info.npcIdx = _npcActorsSystem.GetActiveNpcIdx(this.name);
+            return info;
+        }
+
+        public void ToggleRagdoll(bool ragdollEnabled)
+        {
+            animator.enabled = !ragdollEnabled;
+            foreach(Rigidbody rigidbody in _rigidbodies)
+            {
+                rigidbody.isKinematic = !ragdollEnabled;
+            }
+
+        }
+
         protected void BackToIdle()
         {
             var idleSettings = new IdleBehaviourSettings()
@@ -180,7 +204,6 @@ namespace Code.Actors
             currentBehaviour.onBehaviourEnd += BackToIdle;
             currentBehaviour.OnStart(settings);
         }
-
 
         private void OnDestroy()
         {

@@ -98,7 +98,6 @@ namespace Code.Actors.Player
             {
                 _currentMovement.y = 0;
             }
-            Debug.Log(IsFalling());
             //Handling movement
             Vector3 direction = new Vector3(velocity.x, 0, velocity.z).normalized;
             if (direction.magnitude < 0.1 || !_canMove)
@@ -378,7 +377,7 @@ namespace Code.Actors.Player
             if (stunTime > 0)
             {
                 //handle stun
-                controlLocked = true;
+                //controlLocked = true;
                 StartCoroutine(BeingStunned(stunTime));
             }
         }

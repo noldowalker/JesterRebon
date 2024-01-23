@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnRate: 1.5
   spawnSettings:
-  - prefub: {fileID: 7092087178493391488, guid: c600051d6b41c284eab60a30d641dadb,
+  - prefub: {fileID: 7092087178493391488, guid: 9167e4c7bc20a2240b97207ff1b73245,
       type: 3}
-    amount: 5
+    amount: 1
